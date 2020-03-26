@@ -10,3 +10,8 @@ Reason i am making this thing :
 * i love python
 * i love to make things go fast and achive its full popential in a non-conventional method
 
+## TODOs
+
+- [ ] keygenerator / key expander
+- [ ] per layer function
+- [ ] the reversing function
