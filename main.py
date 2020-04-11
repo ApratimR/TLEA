@@ -13,29 +13,8 @@ import numpy as np
 #char array (size = 95)
 char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
 
-
-#converts character list to integer values
-def converter(parameter1):
-    local_ar1 = []
-    try:
-        for temp1 in parameter1:
-            local_ar1.append(char_array.index(temp1))
-    except:
-        print("enter valid string default set to 1")
-        local_ar1=1
-    return local_ar1
-
-
-
-data = list(input("enter some text to encrypt"))
-key = converter(list(input("enter a key to encrypt")))
-print(key)
-
-#the key generator
-def key_gen(key):
-
-    key_string_length = len(key)
-    start_constant = np.array([
+#predefined sets of box for both s and p
+s_box_set = np.array([
         [50, 84, 23, 34, 41, 32, 51, 76, 90, 93, 3, 59, 87, 9, 33, 18, 70, 20, 53, 47, 28, 54, 24, 67, 65, 44, 1, 92, 40, 17, 66, 29, 4, 30, 49, 71, 0, 63, 88, 2, 35, 61, 77, 48, 26, 8, 73, 75, 89, 16, 43, 69, 37, 5, 82, 11, 42, 45, 79, 78, 31, 56, 81, 74, 22, 72, 60, 19, 62, 13, 15, 85, 52, 39, 55, 68, 46, 21, 83, 86, 7, 6, 91, 10, 57, 27, 36, 14, 94, 58, 38, 80, 12, 25, 64],
         [48, 86, 16, 42, 82, 38, 78, 84, 0, 30, 31, 63, 6, 59, 34, 32, 83, 21, 18, 60, 50, 39, 13, 19, 44, 51, 75, 73, 85, 24, 91, 46, 71, 3, 69, 41, 11, 88, 43, 12, 5, 28, 65, 56, 33, 58, 14, 45, 9, 29, 79, 36, 89, 22, 81, 52, 35, 37, 17, 61, 7, 72, 53, 77, 57, 92, 74, 10, 8, 67, 1, 49, 62, 4, 20, 64, 93, 47, 76, 2, 80, 90, 68, 66, 23, 70, 87, 40, 25, 94, 27, 26, 55, 54, 15],
         [91, 22, 94, 9, 1, 39, 64, 55, 16, 54, 21, 89, 78, 29, 77, 71, 27, 58, 26, 20, 57, 47, 38, 19, 83, 10, 35, 6, 8, 5, 80, 46, 23, 62, 65, 84, 69, 45, 24, 13, 28, 88, 59, 70, 82, 18, 7, 36, 56, 63, 12, 68, 34, 14, 66, 37, 53, 42, 43, 4, 79, 92, 90, 25, 85, 15, 40, 48, 74, 73, 31, 72, 49, 86, 93, 67, 32, 17, 81, 11, 51, 50, 3, 0, 30, 52, 44, 41, 87, 2, 60, 61, 76, 75, 33],
@@ -131,15 +110,38 @@ def key_gen(key):
         [33, 88, 5, 24, 30, 31, 25, 74, 84, 52, 76, 57, 92, 0, 55, 3, 11, 65, 50, 1, 39, 78, 64, 2, 48, 61, 45, 43, 89, 87, 63, 79, 37, 7, 42, 53, 44, 9, 17, 22, 40, 32, 91, 67, 38, 19, 12, 26, 68, 16, 14, 71, 13, 10, 46, 93, 86, 56, 34, 81, 6, 73, 82, 90, 58, 27, 85, 29, 47, 4, 72, 49, 69, 28, 23, 54, 80, 75, 70, 36, 15, 18, 60, 66, 94, 77, 8, 62, 51, 59, 83, 20, 35, 21, 41],
         [65, 6, 54, 3, 11, 9, 15, 89, 69, 81, 52, 4, 59, 83, 10, 33, 55, 61, 37, 82, 74, 68, 66, 90, 26, 41, 67, 43, 53, 77, 22, 79, 20, 72, 8, 57, 2, 29, 1, 23, 56, 58, 35, 86, 46, 85, 48, 75, 91, 47, 7, 42, 27, 32, 45, 36, 12, 73, 63, 34, 71, 44, 60, 19, 87, 64, 14, 17, 21, 30, 84, 78, 70, 51, 16, 88, 40, 13, 94, 31, 80, 24, 18, 28, 0, 49, 5, 50, 62, 93, 39, 92, 76, 38, 25],
         [16, 59, 20, 5, 35, 4, 11, 65, 64, 82, 30, 85, 84, 17, 48, 41, 66, 56, 50, 25, 70, 76, 27, 14, 80, 6, 12, 52, 67, 93, 28, 74, 89, 87, 2, 46, 57, 8, 18, 54, 78, 49, 7, 51, 61, 19, 71, 23, 13, 88, 77, 0, 86, 69, 73, 43, 42, 45, 9, 32, 40, 94, 90, 92, 21, 34, 29, 47, 24, 44, 62, 39, 31, 33, 38, 60, 3, 68, 58, 10, 63, 22, 79, 15, 53, 55, 37, 75, 83, 36, 91, 72, 1, 81, 26]
-    ])
+])
+
+#converts character list to integer values
+def converter(parameter1):
+    local_ar1 = []
+    try:
+        for temp1 in parameter1:
+            local_ar1.append(char_array.index(temp1))
+    except:
+        print("enter valid string default set to 1")
+        local_ar1=1
+    return local_ar1
+
+
+
+data = list(input("enter some text to encrypt"))
+key = converter(list(input("enter a key to encrypt")))
+print(key)
+
+
+#the key generator
+def key_gen(key):
+    global structure
+    key_string_length = len(key)
 
 
     for temp1 in range(key_string_length):
-        pass
-    #return expanded_key
-    
+        
+        # TODO need work here on fixing structure array
+        np.concatenate((structure,s_box_set[temp1]),axis=0)
 
-
-
-#calling the keygenerator
-#key_gen(key)
+structure = np.array([temp1 for temp1 in range(95)])
+key_gen(key)
+print(structure)
+print(type(structure))
