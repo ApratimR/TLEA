@@ -130,18 +130,21 @@ key = converter(list(input("enter a key to encrypt")))
 print(key)
 
 
-#the key generator
-def key_gen(key):
+#structure creator
+def structure_gen(key):
     global structure
     key_string_length = len(key)
 
-
+    temp_array = []
     for temp1 in range(key_string_length):
-        
-        # TODO need work here on fixing structure array
-        np.concatenate((structure,s_box_set[temp1]),axis=0)
+        temp_array.append(s_box_set[temp1])
+    structure = np.array(temp_array)
 
-structure = np.array([temp1 for temp1 in range(95)])
-key_gen(key)
+structure = None
+
+# TODO work on key expansion
+
+
+structure_gen(key)
 print(structure)
 print(type(structure))

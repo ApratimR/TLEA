@@ -13,5 +13,5 @@ Reason i am making this thing :
 ## TODOs
 
 - [ ] keygenerator / key expander
-- [ ] per layer function
+- [x] per layer function
 - [ ] the reversing function
