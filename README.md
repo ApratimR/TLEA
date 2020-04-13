@@ -12,6 +12,8 @@ Reason i am making this thing :
 
 ## TODOs
 
-- [ ] keygenerator / key expander
+- [x] keygenerator / key expander
+- [x] structure generator
 - [x] per layer function
+- [ ] data padding
 - [ ] the reversing function
