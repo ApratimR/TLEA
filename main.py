@@ -1,13 +1,9 @@
-'''
-TODO:create a key generator of desired length
-    1. will generate a number as output of fixed length
-    2. will change per character in key string
-TODO:create a encryption/decryption algo that will use the expanded key and a b;ocl of string as input
-    1. easy to compute
-    2. block size = ???
-'''
-
 import numpy as np
+import pytest
+
+#ANCHOR the below it temperory
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
 
 #char array (size = 95)
@@ -226,28 +222,33 @@ def converter(parameter1):
 
 data = list(input("enter some text to encrypt"))
 key = converter(list(input("enter a key to encrypt")))
-print(key)
 
 
 #structure creator
 def structure_gen(key):
     global structure
-    key_string_length = len(key)
 
     temp_array = []
-    for temp1 in range(key_string_length):
-        temp_array.append(s_box_set[temp1])
+    for temp1 in range(9):
+        temp_array.append(np.roll(s_box_set[temp1],-(key[temp1+6])))
+
     structure = np.array(temp_array)
+
+
+def key_expansion(parameter2):
+    temp_key = [0 for x in range(18)]
+    for temp in range(16):
+        for temp1 in parameter2:
+            temp_key = (temp_key+key_ref_array[temp1])%95
+    return temp_key
+
 
 structure = None
 
-def key_expansion(parameter2):
-# TODO work on key expansion
-#this is temp
-    return parameter2
-
-
+#expands the key to fixed size
 key = key_expansion(key)
+
+#generates structure from expanded key
 structure_gen(key)
+
 print(structure)
-print(type(structure))
