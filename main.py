@@ -349,11 +349,18 @@ def operation_sequence_decider(parameter1):
             temp_array = [temp_array[x] + operation_selector[temp2][x] for x in range(18)]
             temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
         
-        counter = 0
+        counter1 = 0
+        pos = 0
         while(0 in temp_array):
-            temp_array = [temp_array[x] + operation_selector[counter][x] for x in range(18)]
-            temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
-            counter = (counter +1)%95
+            for temp3 in range(18):
+                if temp_array[temp3] + operation_selector[counter1][temp3] > 0:
+                    temp_array[temp3] = 1
+                elif temp_array[temp3] + operation_selector[counter1][temp3] < 0:
+                    temp_array[temp3] = -1
+                else:
+                    continue
+                #temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
+            counter1 = (counter1 +1) % 95
 
     return temp_array
 
