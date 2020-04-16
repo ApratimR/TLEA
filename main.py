@@ -346,7 +346,7 @@ def operation_sequence_decider(parameter1):
     temp_array = [0 for x in range(18)]
     for temp1 in range(16):
         for temp2 in parameter1:
-            temp_array = temp_array + operation_selector[temp2]
+            temp_array = [temp_array[x] + operation_selector[temp2][x] for x in range(18)]
             temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
         
         counter = 0
