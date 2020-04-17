@@ -319,15 +319,15 @@ def converter(parameter1):
 
 def padder(parameter1):
     if len(parameter1) == 0:
-        print("no data provided")
-        data = padder(list(input("enter some text to encrypt")))
+        print("no data provided deafult set to spaces")
+        parameter1.extend([" "for x in range(95)])
     else:
         if len(parameter1)%95 != 0:
             parameter1.extend([" " for x in range((95-len(parameter1)%95))])
     return parameter1
 
-
-data = padder(list(input("enter some text to encrypt")))
+#inputs are taken here
+data = converter(padder(list(input("enter some text to encrypt"))))
 print(data)
 key = converter(list(input("enter a key to encrypt")))
 
