@@ -351,9 +351,10 @@ def operation_sequence_decider(parameter1):
         
         counter = 0
         while(0 in temp_array):
-            temp_array = [1 if x ==1 and y in {0,1} else(-1 if x==-1 and y in {0,-1} else(x)) for x,y in zip(temp_array,operation_selector[counter])]
+            temp_array = [1 if x +y >0 else(-1 if x+y<0 else(x)) for x,y in zip(temp_array,operation_selector[counter])]
             counter = (counter + 1)%95
-            # FIXME need to work here
+
+    print(counter)
 
     return temp_array
 
@@ -370,5 +371,5 @@ key = key_expansion(key)
 structure_gen(key)
 
 #ANCHOR need to work on the process fuction
-
-print(structure)
+print(operator_designator)
+#print(structure)
