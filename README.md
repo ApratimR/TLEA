@@ -15,5 +15,6 @@ Reason i am making this thing :
 - [x] keygenerator / key expander
 - [x] structure generator
 - [x] per layer function
-- [ ] data padding
+- [x] request data again when no input recived
+- [x] data padding
 - [ ] the reversing function

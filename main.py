@@ -317,9 +317,18 @@ def converter(parameter1):
         local_ar1=1
     return local_ar1
 
+def padder(parameter1):
+    if len(parameter1) == 0:
+        print("no data provided")
+        data = padder(list(input("enter some text to encrypt")))
+    else:
+        if len(parameter1)%95 != 0:
+            parameter1.extend([" " for x in range((95-len(parameter1)%95))])
+    return parameter1
 
 
-data = list(input("enter some text to encrypt"))
+data = padder(list(input("enter some text to encrypt")))
+print(data)
 key = converter(list(input("enter a key to encrypt")))
 
 
