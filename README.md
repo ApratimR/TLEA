@@ -1,6 +1,6 @@
 # TLEA (Totally Lame Encryption Algorithm)
 
-<img src="TLEA.png" width="200">
+<img src="TLEA.png" width="400">
 
 As the Acronym says its a lame , in-progress symetric key encryption algorithm whoes aim is to 
 * be fast
