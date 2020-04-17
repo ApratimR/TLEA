@@ -2,7 +2,7 @@
 
 <img src="TLEA.png" width="400">
 
-As the Acronym says its a lame , in-progress symetric key encryption algorithm whoes aim is to 
+As the Acronym says its a lame , in-progress symmetric key encryption algorithm whoes aim is to 
 * be fast
 * and question itself why does it exist
 
