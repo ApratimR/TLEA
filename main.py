@@ -349,18 +349,12 @@ def operation_sequence_decider(parameter1):
             temp_array = [temp_array[x] + operation_selector[temp2][x] for x in range(18)]
             temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
         
-        counter1 = 0
-        pos = 0
+        counter = 0
         while(0 in temp_array):
-            for temp3 in range(18):
-                if temp_array[temp3] + operation_selector[counter1][temp3] > 0:
-                    temp_array[temp3] = 1
-                elif temp_array[temp3] + operation_selector[counter1][temp3] < 0:
-                    temp_array[temp3] = -1
-                else:
-                    continue
-                #temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
-            counter1 = (counter1 +1) % 95
+            temp_array = [1 if x +y >0 else(-1 if x+y<0 else(x)) for x,y in zip(temp_array,operation_selector[counter])]
+            counter = (counter + 1)%95
+
+    print(counter)
 
     return temp_array
 
@@ -377,5 +371,5 @@ key = key_expansion(key)
 structure_gen(key)
 
 #ANCHOR need to work on the process fuction
-
-print(structure)
+print(operator_designator)
+#print(structure)
