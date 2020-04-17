@@ -317,6 +317,7 @@ def converter(parameter1):
         local_ar1=1
     return local_ar1
 
+#this pads the data
 def padder(parameter1):
     if len(parameter1) == 0:
         print("no data provided deafult set to spaces")
@@ -328,21 +329,19 @@ def padder(parameter1):
 
 #inputs are taken here
 data = converter(padder(list(input("enter some text to encrypt"))))
-print(data)
 key = converter(list(input("enter a key to encrypt")))
 
 
-#structure creator
+#structure creator after key expansion
 def structure_gen(key):
     global structure
 
     temp_array = []
     for temp1 in range(9):
         temp_array.append(np.roll(s_box_set[temp1],-(key[temp1+6])))
-
     structure = np.array(temp_array)
 
-#compress/expands the input array to 18 nonagenquinnary size
+#compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter2):
     temp_key = [0 for x in range(18)]
     for temp in range(16):
@@ -362,11 +361,9 @@ def operation_sequence_decider(parameter1):
         while(0 in temp_array):
             temp_array = [1 if x +y >0 else(-1 if x+y<0 else(x)) for x,y in zip(temp_array,operation_selector[counter])]
             counter = (counter + 1)%95
-
-
     return temp_array
 
-
+#structure defined to be used by structure_gen
 structure = None
 
 #decide the order of operation of structure
@@ -379,5 +376,11 @@ key = key_expansion(key)
 structure_gen(key)
 
 #ANCHOR need to work on the process fuction
-print(operator_designator)
+option = int(input("""please enter a option 
+1 for encryption
+2 for decryption
+"""))
+# TODO start work here
+
+#print(operator_designator)
 #print(structure)
