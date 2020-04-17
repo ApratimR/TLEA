@@ -9,7 +9,7 @@ np.set_printoptions(threshold=sys.maxsize)
 #char array (size = 95)
 char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
 
-#predefined sets of box for both s and p
+#predefined sets of box for both S or P operation
 s_box_set = np.array([
         [50, 84, 23, 34, 41, 32, 51, 76, 90, 93, 3, 59, 87, 9, 33, 18, 70, 20, 53, 47, 28, 54, 24, 67, 65, 44, 1, 92, 40, 17, 66, 29, 4, 30, 49, 71, 0, 63, 88, 2, 35, 61, 77, 48, 26, 8, 73, 75, 89, 16, 43, 69, 37, 5, 82, 11, 42, 45, 79, 78, 31, 56, 81, 74, 22, 72, 60, 19, 62, 13, 15, 85, 52, 39, 55, 68, 46, 21, 83, 86, 7, 6, 91, 10, 57, 27, 36, 14, 94, 58, 38, 80, 12, 25, 64],
         [48, 86, 16, 42, 82, 38, 78, 84, 0, 30, 31, 63, 6, 59, 34, 32, 83, 21, 18, 60, 50, 39, 13, 19, 44, 51, 75, 73, 85, 24, 91, 46, 71, 3, 69, 41, 11, 88, 43, 12, 5, 28, 65, 56, 33, 58, 14, 45, 9, 29, 79, 36, 89, 22, 81, 52, 35, 37, 17, 61, 7, 72, 53, 77, 57, 92, 74, 10, 8, 67, 1, 49, 62, 4, 20, 64, 93, 47, 76, 2, 80, 90, 68, 66, 23, 70, 87, 40, 25, 94, 27, 26, 55, 54, 15],
@@ -108,7 +108,7 @@ s_box_set = np.array([
         [16, 59, 20, 5, 35, 4, 11, 65, 64, 82, 30, 85, 84, 17, 48, 41, 66, 56, 50, 25, 70, 76, 27, 14, 80, 6, 12, 52, 67, 93, 28, 74, 89, 87, 2, 46, 57, 8, 18, 54, 78, 49, 7, 51, 61, 19, 71, 23, 13, 88, 77, 0, 86, 69, 73, 43, 42, 45, 9, 32, 40, 94, 90, 92, 21, 34, 29, 47, 24, 44, 62, 39, 31, 33, 38, 60, 3, 68, 58, 10, 63, 22, 79, 15, 53, 55, 37, 75, 83, 36, 91, 72, 1, 81, 26]
 ])
 
-#predefined sets of keys
+#predefined sets of keys for key expansion/compression to 18 nonagenquinnary size
 key_ref_array = np.array([
     [7, 25, 72, 31, 90, 4, 35, 73, 67, 68, 78, 70, 43, 32, 57, 86, 44, 45],
     [50, 20, 55, 60, 64, 80, 87, 82, 41, 92, 28, 47, 52, 9, 69, 63, 66, 70],
@@ -207,7 +207,7 @@ key_ref_array = np.array([
     [83, 74, 62, 28, 77, 3, 58, 48, 42, 57, 44, 55, 18, 31, 17, 71, 27, 69],   
 ])
 
-#
+#random set for deciding S or P operation sequence for operator_designator
 operation_selector = np.array([
     [-1 ,-1 , 1 , 0 , 1 ,-1 ,-1 , 1 , 0 , 1 , 0 , 0 , 0 ,-1 , 0 , 0 , 1 , 0],
     [-1 ,-1 , 0 ,-1 , 0 , 1 ,-1 , 0 ,-1 , 0 , 1 , 0 ,-1 ,-1 ,-1 , 0 , 1 ,-1],
@@ -354,7 +354,6 @@ def operation_sequence_decider(parameter1):
             temp_array = [1 if x +y >0 else(-1 if x+y<0 else(x)) for x,y in zip(temp_array,operation_selector[counter])]
             counter = (counter + 1)%95
 
-    print(counter)
 
     return temp_array
 
