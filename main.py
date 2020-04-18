@@ -204,7 +204,7 @@ key_ref_array = np.array([
     [53, 4, 71, 23, 55, 75, 6, 69, 93, 7, 29, 84, 26, 43, 44, 42, 76, 5],
     [42, 9, 22, 23, 0, 81, 87, 94, 29, 64, 34, 46, 5, 32, 21, 71, 59, 24],
     [49, 8, 33, 76, 75, 35, 74, 88, 69, 90, 47, 10, 81, 56, 79, 59, 51, 80],
-    [83, 74, 62, 28, 77, 3, 58, 48, 42, 57, 44, 55, 18, 31, 17, 71, 27, 69],   
+    [83, 74, 62, 28, 77, 3, 58, 48, 42, 57, 44, 55, 18, 31, 17, 71, 27, 69],
 ])
 
 #random set for deciding S or P operation sequence for operator_designator
@@ -328,17 +328,25 @@ def padder(parameter1):
     return parameter1
 
 #inputs are taken here
-data = converter(padder(list(input("enter some text to encrypt"))))
-key = converter(list(input("enter a key to encrypt")))
+data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
+key = converter(list(input("enter a key to encrypt/decrypt operation :")))
+
+#converts integer value list to string
+def convert_back(parameter1):
+    output = ""
+    for temp1 in parameter1:
+        output+= char_array[temp1]
+    return output
 
 
 #structure creator after key expansion
+#FIXME need some cleanup below (remove global)
 def structure_gen(key):
     global structure
 
     temp_array = []
     for temp1 in range(9):
-        temp_array.append(np.roll(s_box_set[temp1],-(key[temp1+6])))
+        temp_array.append(np.roll(s_box_set[temp1],(key[temp1+9])))
     structure = np.array(temp_array)
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
@@ -356,7 +364,7 @@ def operation_sequence_decider(parameter1):
         for temp2 in parameter1:
             temp_array = [temp_array[x] + operation_selector[temp2][x] for x in range(18)]
             temp_array = [1 if x>0 else(-1 if x<0 else 0) for x in temp_array]
-        
+
         counter = 0
         while(0 in temp_array):
             temp_array = [1 if x +y >0 else(-1 if x+y<0 else(x)) for x,y in zip(temp_array,operation_selector[counter])]
@@ -366,22 +374,33 @@ def operation_sequence_decider(parameter1):
 #encryption function
 def encrypt():
     global operator_designator,structure,data
-    #FIXME start working here
-
-    for temp in range(len(data)/95):
+    #print(operator_designator)
+    #print(structure)
+    data_temp = []
+    for temp in range(int(len(data)/95)):
         temp_array = data[temp:temp+95]
-        
+        temp_array1 = [0 for x in range(95)]
         for temp1 in range(9):
-            if temp1 == 1:#this is for permutation
-                
-                pass
+            if operator_designator[temp1]==1:#this is for permutation
+
+                for temp2 in range(95):
+                    temp_array1[structure[temp1][temp2]]=temp_array[temp2]
+
             else :#this will be substitution
-                pass
+
+                for temp2 in range(95):
+                    temp_array1[temp2] = structure[temp1][temp_array[temp2]]
+
+            temp_array = temp_array1
+        data_temp.extend(temp_array1)
+    #replace the data in the orginal to provede output
+    data = convert_back(data_temp)
 
 
 #decryption function
 def decrypyt():
     global operator_designator,structure,data
+    #FIXME start working here
     pass
 
 #structure defined to be used by structure_gen
@@ -396,15 +415,15 @@ key = key_expansion(key)
 #generates structure from expanded key
 structure_gen(key)
 
-#ANCHOR need to work on the process fuction
+
 while(True):
-    option =input("""please enter a option 
+    option =input("""please enter a option
 1 for encryption
 2 for decryption
 """)
 
-    if option == "1":encrypt();break
-    elif option == "2" :decrypyt();break
+    if option == "1":encrypt();print("'",data,"'");break
+    elif option == "2" :decrypyt();print("'",data,"'");break
     else : print("invalid input")
 #print(operator_designator)
 #print(structure)
