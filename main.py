@@ -366,14 +366,14 @@ def operation_sequence_decider(parameter1):
 #encryption function
 def encrypt():
     global operator_designator,structure,data
-
+    #FIXME start working here
 
     for temp in range(len(data)/95):
         temp_array = data[temp:temp+95]
         
         for temp1 in range(9):
             if temp1 == 1:#this is for permutation
-            
+                
                 pass
             else :#this will be substitution
                 pass
