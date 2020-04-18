@@ -363,6 +363,27 @@ def operation_sequence_decider(parameter1):
             counter = (counter + 1)%95
     return temp_array
 
+#encryption function
+def encrypt():
+    global operator_designator,structure,data
+
+
+    for temp in range(len(data)/95):
+        temp_array = data[temp:temp+95]
+        
+        for temp1 in range(9):
+            if temp1 == 1:#this is for permutation
+            
+                pass
+            else :#this will be substitution
+                pass
+
+
+#decryption function
+def decrypyt():
+    global operator_designator,structure,data
+    pass
+
 #structure defined to be used by structure_gen
 structure = None
 
@@ -376,11 +397,14 @@ key = key_expansion(key)
 structure_gen(key)
 
 #ANCHOR need to work on the process fuction
-option = int(input("""please enter a option 
+while(True):
+    option =input("""please enter a option 
 1 for encryption
 2 for decryption
-"""))
-# TODO start work here
+""")
 
+    if option == "1":encrypt();break
+    elif option == "2" :decrypyt();break
+    else : print("invalid input")
 #print(operator_designator)
 #print(structure)
