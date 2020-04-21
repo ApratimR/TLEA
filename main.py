@@ -439,7 +439,6 @@ def convert_back(parameter1):
 
 
 #structure creator after key expansion
-#FIXME need some cleanup below (remove global)
 def structure_gen(key):
 
     temp_array = []
@@ -475,7 +474,6 @@ def encrypt():
     global operator_designator,structure,data
     #print(operator_designator)
     #print(structure)
-    #NOTE use targeting_array to do a value cross examining
     data_temp = []
     for temp in range(int(len(data)/95)):
         temp_array = data[temp:temp+95]
@@ -492,6 +490,7 @@ def encrypt():
                     temp_array1[temp2] = structure[temp1][temp_array[temp2]]
 
             temp_array = temp_array1[1:]+temp_array1[0:1]
+            #NOTE use the targeting matrix as reference with the key and data
         data_temp.extend(temp_array1)
     #replace the data in the orginal to proveded output
     data = convert_back(data_temp)
@@ -509,12 +508,16 @@ structure = None
 
 #decide the order of operation of structure
 operator_designator = operation_sequence_decider(key)
+#operator_designator size = 18 use 
+#NOTE use the first half for 9 layers in structure and the rest for next data block
 
 #expands the key to fixed size
 key = key_expansion(key)
+#key size=95
 
 #generates structure from expanded key
 structure = structure_gen(key)
+#structure size = 9 x 95
 
 while(True):
     option =input("""please enter a option
