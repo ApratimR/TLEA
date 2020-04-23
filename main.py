@@ -471,6 +471,7 @@ def operation_sequence_decider(parameter1):
 
 #encryption function
 def encrypt():
+    #FIXME serious issue with data
     global operator_designator,structure,data
     #print(operator_designator)
     #print(structure)
@@ -478,19 +479,29 @@ def encrypt():
     for temp in range(int(len(data)/95)):
         temp_array = data[temp:temp+95]
         temp_array1 = [0 for x in range(95)]
-        for temp1 in range(9):
-            if operator_designator[temp1]==1:#this is for permutation
+        for rounds in range(1):
+            for temp1 in range(9):
+                if operator_designator[temp1]==1:#this is for permutation
 
-                for temp2 in range(95):
-                    temp_array1[structure[temp1][temp2]]=temp_array[temp2]
+                    for temp2 in range(95):
+                        temp_array1[structure[temp1][temp2]]=temp_array[temp2]
 
-            else :#this will be substitution
+                else :#this will be substitution
 
-                for temp2 in range(95):
-                    temp_array1[temp2] = structure[temp1][temp_array[temp2]]
+                    for temp2 in range(95):
+                        temp_array1[temp2] = structure[temp1][temp_array[temp2]]
+            
+                #kinda works like XOR in a domain as per the targeting_matrix
 
-            temp_array = temp_array1[1:]+temp_array1[0:1]
-            #NOTE use the targeting matrix as reference with the key and data
+
+                #this is the matrix rotation
+                temp_array1 = temp_array1[1:]+temp_array1[0:1]
+            
+            
+                for temp1 in range(95):
+                    temp_array1[temp1] = targeting_matrix[key[temp1]][temp_array1[temp1]]    
+
+                temp_array = temp_array1
         data_temp.extend(temp_array1)
     #replace the data in the orginal to proveded output
     data = convert_back(data_temp)
