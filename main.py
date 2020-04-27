@@ -1,5 +1,5 @@
 import numpy as np
-import pytest
+
 
 #ANCHOR the below it temperory
 import sys
@@ -475,21 +475,34 @@ def encrypt():
     global operator_designator,structure,data
     #print(operator_designator)
     #print(structure)
+    #print("this is the data ", data)
     data_temp = []
     for temp in range(int(len(data)/95)):
         temp_array = data[temp:temp+95]
         temp_array1 = [0 for x in range(95)]
-        for rounds in range(1):
+        for rounds in range(4):
             for temp1 in range(9):
-                if operator_designator[temp1]==1:#this is for permutation
+                if operator_designator[temp1]==1:
+                    
+                    #this is for permutation
+                    # for temp2 in range(95):
+                    #     temp_array1[structure[temp1][temp2]]=temp_array[temp2]
 
-                    for temp2 in range(95):
-                        temp_array1[structure[temp1][temp2]]=temp_array[temp2]
+
+                    #this is substitution
+                    #for temp2 in range(95):
+                    #    temp_array1[temp2] = structure[temp1][temp_array[temp2]]
+
+                    #key targeted XOR like
+                    for temp1 in range(95):
+                        temp_array1[temp1] = targeting_matrix[key[temp1]][temp_array1[temp1]]
 
                 else :#this will be substitution
-
-                    for temp2 in range(95):
-                        temp_array1[temp2] = structure[temp1][temp_array[temp2]]
+                    
+                    for temp1 in range(95):
+                        temp_array1[temp1] = targeting_matrix[key[temp1]][temp_array1[temp1]]
+                    #for temp2 in range(95):
+                    #    temp_array1[temp2] = structure[temp1][temp_array[temp2]]
             
                 #kinda works like XOR in a domain as per the targeting_matrix
 
@@ -498,8 +511,7 @@ def encrypt():
                 temp_array1 = temp_array1[1:]+temp_array1[0:1]
             
             
-                for temp1 in range(95):
-                    temp_array1[temp1] = targeting_matrix[key[temp1]][temp_array1[temp1]]    
+                
 
                 temp_array = temp_array1
         data_temp.extend(temp_array1)
@@ -541,3 +553,6 @@ while(True):
     else : print("invalid input")
 #print(operator_designator)
 #print(structure)
+
+
+#ord max size is 1114111
