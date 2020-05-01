@@ -260,17 +260,23 @@ def encrypt():
     global encryption_matrix,key,data
     data_temp = []
     for temp in range(int(len(data)/95)):
-        temp_array = data[temp:temp+95]
+        temp_array = data[(temp*95):(temp*95)+95]
         temp_array1 = [0 for x in range(95)]
-        for rounds in range(4):
+        
+        round_encryption_matrix = encryption_matrix
 
-            #NOTE start working above
+        for temp1 in range(95):
+            pass
+
+        for rounds in range(4):
             
+            #NOTE start working above
+
             pass # ANCHOR remove this pass later
 
 
 #decryption function
-def decrypyt():
+def decrypt():
     global encryption_matrix,key,data
     #FIXME start working here
 
@@ -291,7 +297,7 @@ while(True):
 """)
 
     if option == "1":encrypt();print("'",data,"'");break
-    elif option == "2" :decrypyt();print("'",data,"'");break
+    elif option == "2" :decrypt();print("'",data,"'");break
     else : print("invalid input")
 #print(operator_designator)
 #print(structure)
