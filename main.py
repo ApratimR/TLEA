@@ -108,7 +108,7 @@ key_ref_array = np.array([
     [2, 20, 0, 4, 76, 42, 81, 78, 47, 93, 31, 3, 88, 26, 79, 86, 91, 13, 54, 71, 64, 17, 8, 38, 22, 45, 36, 60, 9, 68, 80, 50, 83, 18, 1, 49, 43, 19, 39, 25, 30, 84, 92, 24, 73, 74, 85, 41, 14, 10, 51, 66, 23, 59, 65, 29, 28, 82, 53, 87, 58, 77, 12, 52, 61, 11, 72, 34, 7, 75, 33, 21, 37, 89, 94, 48, 5, 15, 46, 40, 67, 90, 35, 69, 32, 16, 63, 56, 57, 44, 6, 70, 62, 55, 27],
     [27, 40, 26, 20, 85, 51, 64, 5, 59, 63, 7, 76, 15, 29, 49, 19, 70, 79, 87, 81, 72, 92, 0, 16, 11, 71, 24, 61, 34, 28, 45, 44, 62, 35, 78, 37, 93, 66, 25, 55, 3, 50, 56, 36, 84, 31, 91, 32, 2, 42, 53, 82, 65, 18, 41, 68, 39, 73, 88, 83, 52, 22, 58, 75, 9, 47, 48, 8, 67, 86, 23, 77, 43, 94, 13, 30, 80, 17, 46, 90, 21, 1, 57, 89, 33, 54, 69, 74, 38, 12, 6, 60, 4, 10, 14],
     [27, 73, 6, 72, 8, 62, 60, 26, 23, 81, 29, 38, 80, 56, 76, 91, 3, 54, 39, 57, 7, 47, 58, 14, 55, 82, 21, 94, 37, 16, 64, 1, 35, 44, 90, 11, 87, 50, 51, 93, 13, 5, 71, 20, 15, 74, 4, 22, 85, 19, 78, 41, 32, 0, 66, 75, 77, 67, 42, 30, 63, 33, 28, 17, 89, 69, 49, 86, 88, 48, 92, 40, 68, 12, 36, 52, 53, 79, 84, 24, 34, 10, 59, 2, 25, 43, 83, 18, 31, 70, 45, 9, 65, 61, 46]
-])
+],dtype=np.int8)
 
 
 
@@ -209,7 +209,7 @@ encryption_matrix =  np.array([
     [69, 93, 60, 89, 17, 68, 7, 77, 72, 5, 15, 42, 76, 32, 13, 12, 90, 84, 62, 26, 88, 16, 30, 29, 47, 80, 91, 36, 2, 14, 9, 49, 46, 41, 75, 44, 43, 21, 24, 86, 34, 70, 11, 39, 67, 56, 59, 51, 23, 65, 79, 27, 31, 19, 20, 73, 6, 61, 71, 22, 63, 0, 3, 28, 52, 94, 4, 81, 10, 8, 85, 55, 1, 37, 66, 74, 50, 48, 38, 92, 35, 87, 54, 53, 58, 57, 25, 78, 64, 82, 40, 45, 33, 83, 18],
     [72, 86, 77, 15, 4, 48, 53, 67, 60, 44, 3, 47, 63, 35, 62, 30, 34, 59, 74, 28, 37, 2, 33, 87, 17, 56, 64, 12, 88, 7, 9, 19, 49, 38, 85, 83, 94, 91, 8, 5, 25, 40, 39, 14, 84, 36, 18, 6, 22, 50, 65, 10, 54, 71, 13, 31, 20, 68, 43, 76, 21, 82, 45, 0, 46, 16, 73, 61, 81, 41, 79, 93, 26, 11, 51, 90, 32, 89, 52, 57, 23, 58, 24, 70, 27, 42, 29, 55, 80, 66, 69, 92, 75, 78, 1],
     [15, 46, 90, 25, 33, 70, 36, 65, 86, 31, 74, 6, 85, 93, 39, 55, 82, 0, 45, 79, 23, 73, 17, 49, 50, 67, 11, 26, 57, 10, 7, 30, 8, 27, 12, 41, 2, 5, 40, 75, 22, 18, 76, 24, 83, 77, 78, 32, 81, 80, 60, 9, 94, 62, 89, 88, 28, 87, 3, 19, 16, 38, 61, 68, 43, 71, 56, 72, 58, 52, 20, 37, 53, 64, 84, 48, 47, 29, 44, 14, 54, 91, 21, 34, 13, 92, 51, 59, 63, 69, 42, 35, 1, 66, 4],
-])
+],dtype=np.int8)
 
 #converts character list to integer values
 def converter(parameter1):
@@ -232,10 +232,6 @@ def padder(parameter1):
             parameter1.extend([" " for x in range((95-len(parameter1)%95))])
     return parameter1
 
-#inputs are taken here
-data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
-key = converter(list(input("enter a key to encrypt/decrypt operation :")))
-
 #converts integer value list to string
 def convert_back(parameter1):
     output = ""
@@ -248,10 +244,12 @@ def convert_back(parameter1):
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter2):
-    temp_key = [0 for x in range(95)]
+    temp_key = [1 for x in range(95)]
     for rounds in range(64):
         for temp1 in parameter2:
+            temp_key = np.roll(temp_key,-65)
             temp_key = (temp_key+key_ref_array[temp1])%95
+            temp_key = np.roll(temp_key,46)
     return temp_key
 
 
@@ -265,7 +263,9 @@ def encrypt():
         
         round_encryption_matrix = encryption_matrix
 
+        #rotate the matrix WRT the 
         for temp1 in range(95):
+            
             pass
 
         for rounds in range(4):
@@ -284,8 +284,13 @@ def decrypt():
 
 
 
+#inputs are taken here
+data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
+key = converter(list(input("enter a key to encrypt/decrypt operation :")))
+
 #expands the key to fixed size
 key = key_expansion(key)
+print(key)
 #key size=95
 
 
