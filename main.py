@@ -281,16 +281,31 @@ def encrypt(encryption_matrix,key,data):
 		#join the processed data to a temp to send it back
 		data_temp.extend(temp_array)
 
-	data = data_temp
+	return data_temp
 
 
 
 
 #decryption function
 def decrypt(encryption_matrix,key,data):
-	#FIXME start working here
+	data_temp = []
 
-	pass
+	round_dencryption_matrix = encryption_matrix
+
+	for temp1 in range(95):
+		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key[temp1])
+
+	#this is the main encryption loop over data
+	for temp in range(int(len(data)/95)):
+		temp_array = data[(temp*95):(temp*95)+95]
+
+		for rounds in range(16):
+			for temp1 in range(95):
+				temp_array[temp1] = round_dencryption_matrix[temp1].tolist().index(temp_array[temp1])
+		print("debug",temp_array)
+		data_temp.extend(temp_array)
+
+	return data_temp
 
 
 
@@ -310,11 +325,6 @@ while(True):
 2 for decryption
 """)
 
-	if option == "1" :encrypt(encryption_matrix,key,data);print(convert_back(data));break
-	elif option == "2" :decrypt(encryption_matrix,key,data);print(convert_back(data));break
+	if option == "1" :data = encrypt(encryption_matrix,key,data);print(convert_back(data));break
+	elif option == "2" :data = decrypt(encryption_matrix,key,data);print(convert_back(data));break
 	else : print("invalid input")
-#print(operator_designator)
-#print(structure)
-
-
-#ord max size is 1114111

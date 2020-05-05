@@ -14,6 +14,6 @@ Reason i am making this thing :
 
 ## TODOs
 
-- [ ] make it work
+- [X] make it work
 - [ ] make it fast using numba
 - [ ] make the NIM or C implementation for speed
