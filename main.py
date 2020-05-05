@@ -302,7 +302,6 @@ def decrypt(encryption_matrix,key,data):
 		for rounds in range(16):
 			for temp1 in range(95):
 				temp_array[temp1] = round_dencryption_matrix[temp1].tolist().index(temp_array[temp1])
-		print("debug",temp_array)
 		data_temp.extend(temp_array)
 
 	return data_temp
