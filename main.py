@@ -244,12 +244,15 @@ def convert_back(parameter1):
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter2):
-    temp_key = [1 for x in range(95)]
+    temp_key = [0 for x in range(95)]
     for rounds in range(64):
         for temp1 in parameter2:
             temp_key = np.roll(temp_key,-65)
             temp_key = (temp_key+key_ref_array[temp1])%95
             temp_key = np.roll(temp_key,46)
+            temp_key = (temp_key+key_ref_array[(temp1+43)%95])%95
+            temp_key = np.roll(temp_key,24)
+            temp_key = (temp_key+key_ref_array[(temp1+92)%95])%95
     return temp_key
 
 
