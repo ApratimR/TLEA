@@ -265,9 +265,7 @@ def encrypt(encryption_matrix,key,data):
 
 
 	round_encryption_matrix = encryption_matrix
-		#rotate the matrix WRT the key
-	for temp1 in range(95):
-		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key[temp1])
+	
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
@@ -275,6 +273,13 @@ def encrypt(encryption_matrix,key,data):
 
 		#the encryption process
 		for rounds in range(16):
+			
+			#rotate the matrix WRT the key
+			for temp1 in range(95):
+				round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key[temp1])
+
+			key = np.roll(key,1)	
+			
 			for temp1 in range(95):
 				temp_array[temp1] = round_encryption_matrix[temp1][temp_array[temp1]]
 
@@ -292,16 +297,28 @@ def decrypt(encryption_matrix,key,data):
 
 	round_dencryption_matrix = encryption_matrix
 
-	for temp1 in range(95):
-		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key[temp1])
-
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
 		temp_array = data[(temp*95):(temp*95)+95]
 
+		#the dencryption process
 		for rounds in range(16):
+			#FIXME need work here
+			round_dencryption_matrix = encryption_matrix
+
+			for current_matrix in range(rounds):
+
+				
+				for temp1 in range(95):
+					round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key[temp1])
+
+				key = np.roll(key,1)
+
+
 			for temp1 in range(95):
 				temp_array[temp1] = round_dencryption_matrix[temp1].tolist().index(temp_array[temp1])
+		
+		#join the processed data to a temp to send it back
 		data_temp.extend(temp_array)
 
 	return data_temp
