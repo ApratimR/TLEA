@@ -282,9 +282,14 @@ def key_feature_extraction(parameter1):
 		else:
 			occur_array.append(temp1)
 			appearance_array.append(1)
+	'''
+		occour_array only considers the first appearance
+		TODO : make a mechanism to create unique number for each position 
+			kinda like hash function
+	'''
 
-	print("this is occurance array",occur_array)
-	print("this is appearance array",appearance_array)
+	return occur_array,appearance_array
+	
 
 #encryption function
 def encrypt(encryption_matrix,key1,key2,data):
@@ -341,7 +346,10 @@ def decrypt(encryption_matrix,key1,key2,data):
 #inputs are taken here
 data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
 key = converter(list(input("enter a key to encrypt/decrypt operation :")))
-key_feature_extraction(key)
+
+#extracts the feature
+feature1,feature2 = key_feature_extraction(key)
+
 #expands the key to fixed size
 key1,key2 = key_expansion(key),key_expansion1(key)
 #key size=95
