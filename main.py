@@ -278,14 +278,10 @@ def key_feature_extraction(parameter1):
 	appearance_array = []
 	for temp1 in parameter1:
 		if temp1 in occur_array:
-			appearance_array[occur_array.index(temp1)]=+1
+			appearance_array[occur_array.index(temp1)]+=1
 		else:
-
-			'''FIXME : occur_array.extend(list(temp1))
-			TypeError: 'int' object is not iterable''' 
-
-			occur_array.extend(list(temp1))
-			appearance_array.extend(list(1))
+			occur_array.append(temp1)
+			appearance_array.append(1)
 
 	print("this is occurance array",occur_array)
 	print("this is appearance array",appearance_array)
