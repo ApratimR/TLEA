@@ -276,18 +276,16 @@ def key_expansion1(parameter1):
 def key_feature_extraction(parameter1):
 	occur_array = []
 	appearance_array = []
-	for temp1 in parameter1:
+	for temp1,temp1_count in zip(parameter1,range(len(parameter1))):
 		if temp1 in occur_array:
-			appearance_array[occur_array.index(temp1)]+=1
+			appearance_array[occur_array.index(temp1)]+=(temp1_count*temp1)%95
 		else:
 			occur_array.append(temp1)
-			appearance_array.append(1)
-	'''
-		occour_array only considers the first appearance
-		TODO : make a mechanism to create unique number for each position 
-			kinda like hash function
-	'''
+			appearance_array.append(temp1)
 
+	#array shakeup
+	print("DEBUG",(np.array(occur_array)*np.array(appearance_array).reshape(len(appearance_array),1)))
+	#NOTE start work here
 	return occur_array,appearance_array
 	
 
@@ -349,6 +347,7 @@ key = converter(list(input("enter a key to encrypt/decrypt operation :")))
 
 #extracts the feature
 feature1,feature2 = key_feature_extraction(key)
+#print("DEBUG",feature1,feature2)
 
 #expands the key to fixed size
 key1,key2 = key_expansion(key),key_expansion1(key)
