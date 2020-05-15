@@ -16,5 +16,4 @@ Reason i am making this thing :
 
 - [X] make it work
 - [ ] improve security
-- [ ] make it fast using numba
 - [ ] make the NIM or C implementation for speed

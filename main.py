@@ -246,10 +246,11 @@ def convert_back(parameter1):
 
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
-def key_expansion(parameter2):
+def key_expansion(parameter1):
 	temp_key = [0 for x in range(95)]
-	for rounds in range(64):
-		for temp1 in parameter2:
+	#the rounds of 16 are done here
+	for _ in range(64):
+		for temp1 in parameter1:
 			temp_key = np.roll(temp_key,-65)
 			temp_key = (temp_key+key_ref_array[temp1])%95
 			temp_key = np.roll(temp_key,46)
@@ -259,24 +260,38 @@ def key_expansion(parameter2):
 	return temp_key
 
 
+def key_expansion1(parameter1):
+	temp_key = [0 for x in range(95)]
+	#the rounds of 16 are done here
+	for _ in range(64):
+		for temp1 in parameter1:
+			temp_key = np.roll(temp_key,-16)
+			temp_key = (temp_key*key_ref_array[temp1])%95
+			temp_key = np.roll(temp_key,-43)
+			temp_key = (temp_key*key_ref_array[(temp1+30)%95])%95
+			temp_key = np.roll(temp_key,63)
+			temp_key = (temp_key+key_ref_array[(temp1+32)%95])%95
+	return temp_key
+
 #encryption function
-def encrypt(encryption_matrix,key,data):
+def encrypt(encryption_matrix,key1,key2,data):
 	data_temp = []
 
 
 	round_encryption_matrix = encryption_matrix
 		#rotate the matrix WRT the key
 	for temp1 in range(95):
-		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key[temp1])
+		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key1[temp1])
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
 		temp_array = data[(temp*95):(temp*95)+95]
 
 		#the encryption process
-		for rounds in range(16):
+		#the rounds of 16 are done here
+		for _ in range(16):
 			for temp1 in range(95):
-				temp_array[temp1] = round_encryption_matrix[temp1][temp_array[temp1]]
+				temp_array[temp1] = round_encryption_matrix[key2[temp1]][temp_array[temp1]]
 
 		#join the processed data to a temp to send it back
 		data_temp.extend(temp_array)
@@ -287,21 +302,23 @@ def encrypt(encryption_matrix,key,data):
 
 
 #decryption function
-def decrypt(encryption_matrix,key,data):
+def decrypt(encryption_matrix,key1,key2,data):
 	data_temp = []
 
 	round_dencryption_matrix = encryption_matrix
 
 	for temp1 in range(95):
-		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key[temp1])
+		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
 		temp_array = data[(temp*95):(temp*95)+95]
 
-		for rounds in range(16):
+		#the rounds of 16 are done here
+		for _ in range(16):
 			for temp1 in range(95):
-				temp_array[temp1] = round_dencryption_matrix[temp1].tolist().index(temp_array[temp1])
+				temp_array[temp1] = round_dencryption_matrix[key2[temp1]].tolist().index(temp_array[temp1])
+
 		data_temp.extend(temp_array)
 
 	return data_temp
@@ -312,8 +329,9 @@ def decrypt(encryption_matrix,key,data):
 data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
 key = converter(list(input("enter a key to encrypt/decrypt operation :")))
 
+
 #expands the key to fixed size
-key = key_expansion(key)
+key1,key2 = key_expansion(key),key_expansion1(key)
 #key size=95
 
 
@@ -324,6 +342,6 @@ while(True):
 2 for decryption
 """)
 
-	if option == "1" :data = encrypt(encryption_matrix,key,data);print(convert_back(data));break
-	elif option == "2" :data = decrypt(encryption_matrix,key,data);print(convert_back(data));break
+	if option == "1" :data = encrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
+	elif option == "2" :data = decrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
 	else : print("invalid input")
