@@ -273,22 +273,6 @@ def key_expansion1(parameter1):
 			temp_key = (temp_key+key_ref_array[(temp1+32)%95])%95
 	return temp_key
 
-def key_feature_extraction(parameter1):
-	occur_array = []
-	appearance_array = []
-	for temp1,temp1_count in zip(parameter1,range(len(parameter1))):
-		if temp1 in occur_array:
-			appearance_array[occur_array.index(temp1)]+=(temp1_count*temp1)%95
-		else:
-			occur_array.append(temp1)
-			appearance_array.append(temp1)
-
-	#array shakeup
-	print("DEBUG",(np.array(occur_array)*np.array(appearance_array).reshape(len(appearance_array),1)))
-	#NOTE start work here
-	return occur_array,appearance_array
-	
-
 #encryption function
 def encrypt(encryption_matrix,key1,key2,data):
 	data_temp = []
@@ -345,9 +329,6 @@ def decrypt(encryption_matrix,key1,key2,data):
 data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
 key = converter(list(input("enter a key to encrypt/decrypt operation :")))
 
-#extracts the feature
-feature1,feature2 = key_feature_extraction(key)
-#print("DEBUG",feature1,feature2)
 
 #expands the key to fixed size
 key1,key2 = key_expansion(key),key_expansion1(key)
