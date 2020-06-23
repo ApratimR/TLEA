@@ -274,7 +274,7 @@ def key_expansion1(parameter1):
 	return temp_key
 
 #encryption function
-def encrypt(encryption_matrix,key1,key2,data):
+def encrypt(encryption_matrix,key1,key2,mode_operation,data):
 	data_temp = []
 
 
@@ -302,7 +302,7 @@ def encrypt(encryption_matrix,key1,key2,data):
 
 
 #decryption function
-def decrypt(encryption_matrix,key1,key2,data):
+def decrypt(encryption_matrix,key1,key2,mode_operation,data):
 	data_temp = []
 
 	round_dencryption_matrix = encryption_matrix
@@ -341,7 +341,11 @@ while(True):
 1 for encryption
 2 for decryption
 """)
+	mode_operation =input("""please enter a option
+1 for simple
+2 for chaining
+""")
 
-	if option == "1" :data = encrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
-	elif option == "2" :data = decrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
+	if option == "1" :data = encrypt(encryption_matrix,key1,key2,mode_operation,data);print(convert_back(data));break
+	elif option == "2" :data = decrypt(encryption_matrix,key1,key2,mode_operation,data);print(convert_back(data));break
 	else : print("invalid input")
