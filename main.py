@@ -325,13 +325,15 @@ def decrypt_nc(encryption_matrix,key1,key2,data):
 
 
 
-#inputs are taken here
-data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
-key = converter(list(input("enter a key to encrypt/decrypt operation :")))
+#global variables
+data = None
+key = None
+key1 =None
+Key2 = None
 
 
 #expands the key to fixed size
-key1,key2 = key_expansion(key),key_expansion1(key)
+
 #key size=95
 
 
@@ -350,3 +352,7 @@ def input_buffer(user_input):
 	global data
 	data = converter(padder(list(user_input)))
 
+def key_input_buffer(key_input):
+	global key,key1,key2
+	key = converter(list(key_input))
+	key1,key2 = key_expansion(key),key_expansion1(key)
