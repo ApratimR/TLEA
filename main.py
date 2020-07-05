@@ -1,5 +1,5 @@
 import numpy as np
-
+import os
 
 #ANCHOR the below import is temperory
 #import sys
@@ -233,7 +233,7 @@ def padder(parameter1):
 
 #converts integer value list to string
 def convert_back(parameter1):
-	output = ""
+	output = str()
 
 	try:
 		for temp1 in parameter1:
@@ -306,7 +306,7 @@ def decrypt_nc(encryption_matrix,key1,key2,data):
 	data_temp = []
 
 	round_dencryption_matrix = encryption_matrix
-
+		#rotate the matrix WRT the key
 	for temp1 in range(95):
 		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
 
@@ -329,30 +329,39 @@ def decrypt_nc(encryption_matrix,key1,key2,data):
 data = None
 key = None
 key1 =None
-Key2 = None
-
+key2 = None
 
 #expands the key to fixed size
 
 #key size=95
 
-
-
-while(True):
-	option =input("""please enter a option
-1 for encryption
-2 for decryption
-""")
-
-	if option == "1" :data = encrypt_nc(encryption_matrix,key1,key2,data);print(convert_back(data));break
-	elif option == "2" :data = decrypt_nc(encryption_matrix,key1,key2,data);print(convert_back(data));break
-	else : print("invalid input")
-
-def input_buffer(user_input):
+def input_data(user_input):
 	global data
 	data = converter(padder(list(user_input)))
 
-def key_input_buffer(key_input):
+def input_key(key_input):
 	global key,key1,key2
 	key = converter(list(key_input))
-	key1,key2 = key_expansion(key),key_expansion1(key)
+	key1 = key_expansion(key)
+	key2 = key_expansion1(key)
+
+# def reset_internal():
+# 	global data,key,key1,key2,output_buffer
+# 	data = None
+# 	key = None
+# 	key1 =None
+# 	key2 = None
+# 	output_buffer =None
+
+
+def encrypt_no_chaining():
+	global key1,key2,data,encryption_matrix
+	output_buffer=encrypt_nc(encryption_matrix,key1,key2,data)
+	output_buffer=convert_back(output_buffer)
+	return output_buffer
+
+def decrypt_no_chaining():
+	global key1,key2,data,encryption_matrix
+	output_buffer=decrypt_nc(encryption_matrix,key1,key2,data)
+	output_buffer=convert_back(output_buffer)
+	return output_buffer
