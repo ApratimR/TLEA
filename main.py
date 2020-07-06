@@ -1,9 +1,9 @@
 import numpy as np
-import os
+
 
 #ANCHOR the below import is temperory
-#import sys
-#np.set_printoptions(threshold=sys.maxsize)
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
 
 #char array (size = 95)
@@ -233,7 +233,7 @@ def padder(parameter1):
 
 #converts integer value list to string
 def convert_back(parameter1):
-	output = str()
+	output = ""
 
 	try:
 		for temp1 in parameter1:
@@ -274,7 +274,7 @@ def key_expansion1(parameter1):
 	return temp_key
 
 #encryption function
-def encrypt_nc(encryption_matrix,key1,key2,data):
+def encrypt(encryption_matrix,key1,key2,data):
 	data_temp = []
 
 
@@ -302,11 +302,11 @@ def encrypt_nc(encryption_matrix,key1,key2,data):
 
 
 #decryption function
-def decrypt_nc(encryption_matrix,key1,key2,data):
+def decrypt(encryption_matrix,key1,key2,data):
 	data_temp = []
 
 	round_dencryption_matrix = encryption_matrix
-		#rotate the matrix WRT the key
+
 	for temp1 in range(95):
 		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
 
@@ -325,43 +325,71 @@ def decrypt_nc(encryption_matrix,key1,key2,data):
 
 
 
-#global variables
+#inputs are taken here
 data = None
 key = None
-key1 =None
+key1 = None
 key2 = None
 
-#expands the key to fixed size
-
-#key size=95
-
-def input_data(user_input):
+def data_input(rawdata):
 	global data
-	data = converter(padder(list(user_input)))
+	data = rawdata
+	data = converter(padder(list(data)))
 
-def input_key(key_input):
-	global key,key1,key2
-	key = converter(list(key_input))
-	key1 = key_expansion(key)
-	key2 = key_expansion1(key)
-
-# def reset_internal():
-# 	global data,key,key1,key2,output_buffer
-# 	data = None
-# 	key = None
-# 	key1 =None
-# 	key2 = None
-# 	output_buffer =None
+def key_input(rawkey):
+	global key
+	global key1
+	global key2
+	key = rawkey
+	key = converter(list(key))
+	key1,key2 = key_expansion(key),key_expansion1(key)
 
 
-def encrypt_no_chaining():
-	global key1,key2,data,encryption_matrix
-	output_buffer=encrypt_nc(encryption_matrix,key1,key2,data)
-	output_buffer=convert_back(output_buffer)
-	return output_buffer
+def do_encryption():
+	global data
+	global encryption_matrix
+	global key1
+	global key2
+	temp = encrypt(encryption_matrix,key1,key2,data)
+	temp = convert_back(temp)
+	reset()
+	return temp
 
-def decrypt_no_chaining():
-	global key1,key2,data,encryption_matrix
-	output_buffer=decrypt_nc(encryption_matrix,key1,key2,data)
-	output_buffer=convert_back(output_buffer)
-	return output_buffer
+def do_decryption():
+	global data
+	global encryption_matrix
+	global key1
+	global key2
+	temp = decrypt(encryption_matrix,key1,key2,data)
+	temp = convert_back(temp)
+	reset()
+	return temp
+
+def reset():
+	global data,key,key1,key2
+	data = None
+	key = None
+	key1 = None
+	key2 = None
+
+
+if __name__ != "__main__":
+	reset()
+else:
+	reset()
+
+
+
+#this is some messed up stuff
+
+# data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
+# key = converter(list(input("enter a key to encrypt/decrypt operation :")))
+# key1,key2 = key_expansion(key),key_expansion1(key)
+# while(True):
+# 	option =input("""please enter a option
+# 1 for encryption
+# 2 for decryption
+# """)
+# 	if option == "1" :data = encrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
+# 	elif option == "2" :data = decrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
+# 	else : print("invalid input")
