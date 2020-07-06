@@ -233,7 +233,7 @@ def padder(parameter1):
 
 #converts integer value list to string
 def convert_back(parameter1):
-	output = ""
+	output = str()
 
 	try:
 		for temp1 in parameter1:
@@ -324,59 +324,25 @@ def decrypt(encryption_matrix,key1,key2,data):
 	return data_temp
 
 
-
-#inputs are taken here
-data = None
-key = None
-key1 = None
-key2 = None
-
-def data_input(rawdata):
-	global data
-	data = rawdata
-	data = converter(padder(list(data)))
-
-def key_input(rawkey):
-	global key
-	global key1
-	global key2
-	key = rawkey
-	key = converter(list(key))
-	key1,key2 = key_expansion(key),key_expansion1(key)
-
-
-def do_encryption():
-	global data
+def do_encryption(rawdata , rawkey):
 	global encryption_matrix
-	global key1
-	global key2
-	temp = encrypt(encryption_matrix,key1,key2,data)
-	temp = convert_back(temp)
-	reset()
+	data = converter(padder(list(rawdata)))
+	key = converter(list(rawkey))
+	dkey1 = key_expansion(key)
+	dkey2 = key_expansion1(key)
+	temp = convert_back(encrypt(encryption_matrix,dkey1,dkey2,data))
 	return temp
 
-def do_decryption():
-	global data
+def do_decryption(rawdata , rawkey):
 	global encryption_matrix
-	global key1
-	global key2
-	temp = decrypt(encryption_matrix,key1,key2,data)
-	temp = convert_back(temp)
-	reset()
+	data = converter(padder(list(rawdata)))
+	key = converter(list(rawkey))
+	dkey1 = key_expansion(key)
+	dkey2 = key_expansion1(key)
+	temp = convert_back(decrypt(encryption_matrix,dkey1,dkey2,data))
 	return temp
 
-def reset():
-	global data,key,key1,key2
-	data = None
-	key = None
-	key1 = None
-	key2 = None
 
-
-if __name__ != "__main__":
-	reset()
-else:
-	reset()
 
 
 
