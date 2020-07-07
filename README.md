@@ -17,8 +17,3 @@ Reason i am making this thing :
 - [X] make it work
 - [ ] improve security (need to use chaining to avoid pattern based attack)
 - [ ] make the NIM or C implementation for speed
-
-
-## PSA
- * currentely working on a diffrent project
- * will soon implement other stuff of TODOs
