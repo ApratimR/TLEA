@@ -274,12 +274,13 @@ def key_expansion1(parameter1):
 	return temp_key
 
 #encryption function
-def encrypt(encryption_matrix,key1,key2,data):
+def encrypt(ref_encryption_matrix,key1,key2,data):
 	data_temp = []
 
 
-	round_encryption_matrix = encryption_matrix
-		#rotate the matrix WRT the key
+	round_encryption_matrix = ref_encryption_matrix
+	
+	#FIXME this loop is somehow modifying the global encryption matrix
 	for temp1 in range(95):
 		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key1[temp1])
 
@@ -302,10 +303,10 @@ def encrypt(encryption_matrix,key1,key2,data):
 
 
 #decryption function
-def decrypt(encryption_matrix,key1,key2,data):
+def decrypt(ref_encryption_matrix,key1,key2,data):
 	data_temp = []
 
-	round_dencryption_matrix = encryption_matrix
+	round_dencryption_matrix = ref_encryption_matrix
 
 	for temp1 in range(95):
 		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
@@ -325,37 +326,21 @@ def decrypt(encryption_matrix,key1,key2,data):
 
 
 def do_encryption(rawdata , rawkey):
-	global encryption_matrix
-	data = converter(padder(list(rawdata)))
-	key = converter(list(rawkey))
-	dkey1 = key_expansion(key)
-	dkey2 = key_expansion1(key)
-	temp = convert_back(encrypt(encryption_matrix,dkey1,dkey2,data))
+	temp = working_shit(rawdata,rawkey,"1")
 	return temp
 
 def do_decryption(rawdata , rawkey):
-	global encryption_matrix
-	data = converter(padder(list(rawdata)))
-	key = converter(list(rawkey))
-	dkey1 = key_expansion(key)
-	dkey2 = key_expansion1(key)
-	temp = convert_back(decrypt(encryption_matrix,dkey1,dkey2,data))
+	temp = working_shit(rawdata,rawkey,"2")
 	return temp
 
 
-
-
-
 #this is some messed up stuff
-
-# data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
-# key = converter(list(input("enter a key to encrypt/decrypt operation :")))
-# key1,key2 = key_expansion(key),key_expansion1(key)
-# while(True):
-# 	option =input("""please enter a option
-# 1 for encryption
-# 2 for decryption
-# """)
-# 	if option == "1" :data = encrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
-# 	elif option == "2" :data = decrypt(encryption_matrix,key1,key2,data);print(convert_back(data));break
-# 	else : print("invalid input")
+def working_shit(rawdata , rawkey ,option):
+	global encryption_matrix
+	sahdow_encryption_matrix = encryption_matrix
+	data = converter(padder(list(rawdata)))
+	key = converter(list(rawkey))
+	key1,key2 = key_expansion(key),key_expansion1(key)
+	
+	if option == "1" :data = encrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
+	elif option == "2" :data = decrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
