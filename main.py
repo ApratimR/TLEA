@@ -122,7 +122,6 @@ def do_decryption(rawdata , rawkey):
 	return temp
 
 
-#this is some messed up stuff
 def main_call(rawdata , rawkey ,option):
 	sahdow_encryption_matrix = np.loadtxt("main_array.csv",dtype=np.int8,delimiter=",")
 	data = converter(padder(list(rawdata)))
