@@ -2,8 +2,8 @@ import numpy as np
 
 
 #ANCHOR the below import is temperory
-import sys
-np.set_printoptions(threshold=sys.maxsize)
+#import sys
+#np.set_printoptions(threshold=sys.maxsize)
 
 
 #char array (size = 95)
