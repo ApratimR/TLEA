@@ -121,6 +121,13 @@ def do_decryption(rawdata , rawkey):
 	temp = main_call(rawdata,rawkey,2)
 	return temp
 
+def do_encryption_chain(rawdata ,rawkey):
+	temp = main_call(rawdata,rawkey,3)
+	return temp
+
+def do_decryption_chain(rawdata ,rawkey):
+	temp = main_call(rawdata,rawkey,4)
+	return temp
 
 def main_call(rawdata , rawkey ,option):
 	sahdow_encryption_matrix = np.loadtxt("main_array.csv",dtype=np.int8,delimiter=",")
