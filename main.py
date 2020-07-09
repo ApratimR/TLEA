@@ -131,27 +131,13 @@ def main_call(rawdata , rawkey ,option):
 	
 	if option == 1 :data = encrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
 	elif option == 2 :data = decrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
-	elif option == 3 :pass
+	elif option == 3 :data = encrypt_chain(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
+	elif option == 4 :data = decrypt_chain(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
 
-def decrypt_chain(round_dencryption_matrix,key1,key2,data):
-	data_temp = []
-	for temp1 in range(95):
-		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
 
-	#this is the main encryption loop over data
-	for temp in range(int(len(data)/95)):
-		temp_array = data[(temp*95):(temp*95)+95]
-
-		#the rounds of 16 are done here
-		for _ in range(16):
-			for temp1 in range(95):
-				temp_array[temp1] = round_dencryption_matrix[key2[temp1]].tolist().index(temp_array[temp1])
-
-		data_temp.extend(temp_array)
-
-	return data_temp
-
-#encryption function
+#encryption function 
+#TODO need to introduce chaining below with no parallelization
+#or any initial vector
 def encrypt_chain(round_encryption_matrix,key1,key2,data):
 	data_temp = []
 	for temp1 in range(95):
@@ -168,6 +154,26 @@ def encrypt_chain(round_encryption_matrix,key1,key2,data):
 				temp_array[temp1] = round_encryption_matrix[key2[temp1]][temp_array[temp1]]
 
 		#join the processed data to a temp to send it back
+		data_temp.extend(temp_array)
+
+	return data_temp
+
+
+
+def decrypt_chain(round_dencryption_matrix,key1,key2,data):
+	data_temp = []
+	for temp1 in range(95):
+		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
+
+	#this is the main encryption loop over data
+	for temp in range(int(len(data)/95)):
+		temp_array = data[(temp*95):(temp*95)+95]
+
+		#the rounds of 16 are done here
+		for _ in range(16):
+			for temp1 in range(95):
+				temp_array[temp1] = round_dencryption_matrix[key2[temp1]].tolist().index(temp_array[temp1])
+
 		data_temp.extend(temp_array)
 
 	return data_temp
