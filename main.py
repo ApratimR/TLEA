@@ -121,6 +121,13 @@ def do_decryption(rawdata , rawkey):
 	temp = main_call(rawdata,rawkey,2)
 	return temp
 
+def do_encryption_chain(rawdata ,rawkey):
+	temp = main_call(rawdata,rawkey,3)
+	return temp
+
+def do_decryption_chain(rawdata ,rawkey):
+	temp = main_call(rawdata,rawkey,4)
+	return temp
 
 #this is some messed up stuff
 def main_call(rawdata , rawkey ,option):
