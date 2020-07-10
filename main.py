@@ -69,6 +69,13 @@ def key_expansion1(parameter1):
 			temp_key = (temp_key+key_ref_array[(temp1+32)%95])%95
 	return temp_key
 
+
+#TODO make a Initial Vector generator ??
+def initial_vector_generator(data):
+
+	return data
+
+
 #encryption function
 def encrypt(round_encryption_matrix,key1,key2,data):
 	data_temp = []
