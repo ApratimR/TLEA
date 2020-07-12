@@ -72,7 +72,9 @@ def key_expansion1(parameter1):
 
 #TODO make a Initial Vector generator ??
 def initial_vector_generator(data):
-	
+	temp = converter(data)
+	for temp1 in temp:
+		pass
 	return data
 
 
