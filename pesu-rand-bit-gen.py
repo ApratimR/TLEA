@@ -1,10 +1,25 @@
-power = int(input("enter power amount"))
-field = int(input("enter the field size"))
-seed = int(input("enter seed"))
+#char array (size = 95)
+char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\^_]`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
 
 
-while(True):
-	seed = (seed ** power)%field
+#converts character list to integer values
+def converter(parameter1):
+	local_ar1 = []
+	try:
+		for temp1 in parameter1:
+			local_ar1.append(char_array.index(temp1))
+	except:
+		print("enter valid string default set to 1")
+		local_ar1=1
+	return local_ar1
+
+
+
+data = converter(input("data"))
+
+
+for temp in data:
+	seed = ((seed+temp) ** 2)%95
 	if seed%2==1:
 		print(f"0",end="")
 	else:
@@ -13,3 +28,4 @@ while(True):
 	temp = input()
 	if temp == "q":
 		break
+	
