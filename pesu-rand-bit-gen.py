@@ -13,19 +13,13 @@ def converter(parameter1):
 		local_ar1=1
 	return local_ar1
 
+def expand(data):
+	seed = 1
+	temp_data = []
+	for temp in data:
+		seed = ((seed+temp) ** 2)%97
+		temp_data.extend(str(seed))
 
+	return temp_data
 
-data = converter(input("data"))
-
-
-for temp in data:
-	seed = ((seed+temp) ** 2)%95
-	if seed%2==1:
-		print(f"0",end="")
-	else:
-		print(f"1",end="")
-
-	temp = input()
-	if temp == "q":
-		break
-	
+data = expand(converter(input("data")))
