@@ -13,6 +13,18 @@ def converter(parameter1):
 		local_ar1=1
 	return local_ar1
 
+def padder(parameter1):
+	if len(parameter1) == 0:
+		print("no data provided deafult set to spaces")
+		parameter1.extend([" "for x in range(95)])
+	else:
+		if len(parameter1)%95 != 0:
+			parameter1.extend([" " for x in range((95-len(parameter1)%95))])
+	return parameter1
+
+
+
+
 def expand(data):
 	seed = 1
 	temp_data = []
@@ -23,3 +35,5 @@ def expand(data):
 	return temp_data
 
 data = expand(converter(input("data")))
+
+print(data)
