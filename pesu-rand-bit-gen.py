@@ -26,14 +26,10 @@ def padder(parameter1):
 
 
 def expand(data):
-	seed = 1
-	temp_data = []
-	for temp in data:
-		seed = ((seed+temp) ** 2)%97
-		temp_data.extend(str(seed))
-
+	#TODO gotta make better PRNG for IV
+	temp_data = data
 	return temp_data
 
-data = expand(converter(input("data")))
+data = expand(converter(padder(list(input("data is")))))
 
-print(data)
+print(",".join(data))
