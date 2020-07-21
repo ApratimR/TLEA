@@ -26,8 +26,17 @@ def padder(parameter1):
 
 
 def expand(data):
-	#TODO gotta make better PRNG for IV
-	temp_data = data
+	#TODO gotta make better PRNG for IV\
+	#using modified LCG algo
+	seed = 289800465
+
+	temp_data = []
+	for temp in data:
+		seed = ((seed * temp) + 670141274)%95
+		temp_data.append(str(seed))
+
+
+	
 	return temp_data
 
 data = expand(converter(padder(list(input("data is")))))
