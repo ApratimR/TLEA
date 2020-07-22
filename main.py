@@ -192,3 +192,21 @@ def decrypt_chain(round_dencryption_matrix,key1,key2,data):
 		data_temp.extend(temp_array)
 
 	return data_temp
+
+
+if __name__ == "__main__":
+	rawtext = str(input("enter the data you want to encrypt/decrypt"))
+	password = str(input("enter the password"))
+	ModeOfOperation = int(input("""
+enter the mode of operation
+1.encryption without chaining
+2.decryption without chaining
+3.encryption with chaining
+4.decryption with chaining
+"""))
+
+	if ModeOfOperation in (1,2,3,4):
+		output = main_call(rawdata=rawtext,rawkey=password,option = ModeOfOperation)
+		print(output)
+	else:
+		raise Exception("Invalid option entered")

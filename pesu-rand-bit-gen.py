@@ -28,11 +28,12 @@ def padder(parameter1):
 def expand(data):
 	#TODO gotta make better PRNG for IV\
 	#using modified LCG algo
-	seed = 289800465
-
+	adder = 289800465
+	seed = adder
 	temp_data = []
 	for temp in data:
 		seed = ((seed * temp) + 670141274)%95
+		
 		temp_data.append(str(seed))
 
 
