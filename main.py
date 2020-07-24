@@ -203,7 +203,7 @@ enter the mode of operation
 2.decryption without chaining
 3.encryption with chaining
 4.decryption with chaining
-"""))
+=>"""))
 
 	if ModeOfOperation in (1,2,3,4):
 		output = main_call(rawdata=rawtext,rawkey=password,option = ModeOfOperation)

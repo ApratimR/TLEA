@@ -29,12 +29,14 @@ def expand(data):
 	#TODO gotta make better PRNG for IV\
 	#using modified LCG algo
 	adder = 289800465
+	adder2 = 279880967
+	seed2 = adder2
 	seed = adder
 	temp_data = []
 	for temp in data:
-		seed = ((seed * temp) + 670141274)%95
-		
-		temp_data.append(str(seed))
+		seed = ((seed * temp) + (670141274+(temp*seed2)))%95
+		seed2 = ((seed2 * temp) + (153419145+(temp*seed2)))%95
+		temp_data.append(str((seed+seed2)%95))
 
 
 	
@@ -42,4 +44,4 @@ def expand(data):
 
 data = expand(converter(padder(list(input("data is")))))
 
-print(",".join(data))
+print(", ".join(data))
