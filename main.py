@@ -71,11 +71,31 @@ def key_expansion1(parameter1):
 
 
 #TODO make a Initial Vector generator ??
-def initial_vector_generator(data):
-	temp = converter(data)
-	for temp1 in temp:
-		pass
-	return data
+#FIXME need some serious work here and maybe others too
+def initial_vector_generator(parameter1):
+	iv_ref_array = np.loadtxt("iv.csv",dtype=np.int8,delimiter=",")
+	temp_key = [0 for x in range(95)]
+	#the rounds of 16 are done here
+	for _ in range(64):
+		for temp1 in parameter1:
+			temp_key = np.roll(temp_key,temp1+68)
+			temp_key = (temp_key*iv_ref_array[temp1])%95
+			temp_key = np.roll(temp_key,temp1+85)
+			temp_key = (temp_key*iv_ref_array[(temp1+7)%95])%95
+			temp_key = np.roll(temp_key,temp1-35)
+			temp_key = (temp_key+iv_ref_array[(temp1+36)%95])%95
+
+			temp_key = np.roll(temp_key,temp1-73)
+			temp_key = (temp_key*iv_ref_array[(temp1+31)%95])%95
+			temp_key = np.roll(temp_key,temp1+26)
+			temp_key = (temp_key+iv_ref_array[(temp1+39)%95])%95
+
+			temp_key = np.roll(temp_key,temp1+42)
+			temp_key = (temp_key*iv_ref_array[(temp1+64)%95])%95
+			temp_key = np.roll(temp_key,temp1+90)
+			temp_key = (temp_key+iv_ref_array[(temp1+39)%95])%95
+
+	return temp_key
 
 
 #encryption function

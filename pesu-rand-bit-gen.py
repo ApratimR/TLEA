@@ -37,11 +37,9 @@ def expand(data):
 		seed = ((seed * temp) + (670141274+(temp*seed2)))%95
 		seed2 = ((seed2 * temp) + (153419145+(temp*seed2)))%95
 		temp_data.append(str((seed+seed2)%95))
-
-
 	
 	return temp_data
 
 data = expand(converter(padder(list(input("data is")))))
 
-print(", ".join(data))
+print(",".join(data))
