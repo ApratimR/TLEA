@@ -42,31 +42,31 @@ def convert_back(parameter1):
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter1):
 	key_ref_array = np.loadtxt("ref_array.csv",dtype=np.int8,delimiter=",")
-	temp_key = [0 for x in range(95)]
+	temp_key = [1 for x in range(95)]
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
-			temp_key = np.roll(temp_key,-65)
 			temp_key = (temp_key+key_ref_array[temp1])%95
 			temp_key = np.roll(temp_key,46)
 			temp_key = (temp_key+key_ref_array[(temp1+43)%95])%95
 			temp_key = np.roll(temp_key,24)
 			temp_key = (temp_key+key_ref_array[(temp1+92)%95])%95
+			temp_key = np.roll(temp_key,-65)
 	return temp_key
 
 
 def key_expansion1(parameter1):
 	key_ref_array = np.loadtxt("ref_array.csv",dtype=np.int8,delimiter=",")
-	temp_key = [0 for x in range(95)]
+	temp_key = [1 for x in range(95)]
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
-			temp_key = np.roll(temp_key,-16)
 			temp_key = (temp_key*key_ref_array[temp1])%95
 			temp_key = np.roll(temp_key,-43)
 			temp_key = (temp_key*key_ref_array[(temp1+30)%95])%95
 			temp_key = np.roll(temp_key,63)
 			temp_key = (temp_key+key_ref_array[(temp1+32)%95])%95
+			temp_key = np.roll(temp_key,-16)
 	return temp_key
 
 
@@ -74,26 +74,26 @@ def key_expansion1(parameter1):
 #FIXME need some serious work here and maybe others too
 def initial_vector_generator(parameter1):
 	iv_ref_array = np.loadtxt("iv.csv",dtype=np.int8,delimiter=",")
-	temp_key = [0 for x in range(95)]
+	temp_key = [1 for x in range(95)]
 	#the rounds of 16 are done here
-	for _ in range(64):
+	for _ in range(2):
 		for temp1 in parameter1:
-			temp_key = np.roll(temp_key,temp1+68)
-			temp_key = (temp_key*iv_ref_array[temp1])%95
+			temp_key = (temp_key+iv_ref_array[temp1])%95
 			temp_key = np.roll(temp_key,temp1+85)
-			temp_key = (temp_key*iv_ref_array[(temp1+7)%95])%95
+			temp_key = (temp_key+iv_ref_array[(temp1+7)%95])%95
 			temp_key = np.roll(temp_key,temp1-35)
 			temp_key = (temp_key+iv_ref_array[(temp1+36)%95])%95
 
 			temp_key = np.roll(temp_key,temp1-73)
-			temp_key = (temp_key*iv_ref_array[(temp1+31)%95])%95
+			temp_key = (temp_key+iv_ref_array[(temp1+31)%95])%95
 			temp_key = np.roll(temp_key,temp1+26)
 			temp_key = (temp_key+iv_ref_array[(temp1+39)%95])%95
 
 			temp_key = np.roll(temp_key,temp1+42)
-			temp_key = (temp_key*iv_ref_array[(temp1+64)%95])%95
+			temp_key = (temp_key+iv_ref_array[(temp1+64)%95])%95
 			temp_key = np.roll(temp_key,temp1+90)
 			temp_key = (temp_key+iv_ref_array[(temp1+39)%95])%95
+			temp_key = np.roll(temp_key,temp1+68)
 
 	return temp_key
 
