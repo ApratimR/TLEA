@@ -61,17 +61,23 @@ def key_expansion1(parameter1):
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
-			temp_key = (temp_key*key_ref_array[temp1])%95
+			temp_key = (temp_key+key_ref_array[temp1])%95
 			temp_key = np.roll(temp_key,-43)
-			temp_key = (temp_key*key_ref_array[(temp1+30)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+30)%95])%95
 			temp_key = np.roll(temp_key,63)
 			temp_key = (temp_key+key_ref_array[(temp1+32)%95])%95
 			temp_key = np.roll(temp_key,-16)
 	return temp_key
 
 
-#TODO make a Initial Vector generator ??
-#FIXME need some serious work here and maybe others too
+#TODO make batch of 4 process
+"""
+1.add the ref array
+2.roll it
+3.add a scalar
+4.roll it
+#NOTE for each key releated generator preocess
+"""
 def initial_vector_generator(parameter1):
 	iv_ref_array = np.loadtxt("iv.csv",dtype=np.int8,delimiter=",")
 	temp_key = [1 for x in range(95)]
