@@ -88,7 +88,7 @@ def initial_vector_generator(parameter1):
 			temp_key = np.roll(temp_key,temp1+85)
 			temp_key = (temp_key+iv_ref_array[(temp1+7)%95])%95
 			temp_key = np.roll(temp_key,temp1-35)
-			temp_key = (temp_key+iv_ref_array[(temp1+36)%95])%95
+			temp_key = (temp_key+temp1+36)%95
 
 			temp_key = np.roll(temp_key,temp1-73)
 			temp_key = (temp_key+iv_ref_array[(temp1+31)%95])%95
