@@ -70,14 +70,6 @@ def key_expansion1(parameter1):
 	return temp_key
 
 
-#TODO make batch of 4 process
-"""
-1.add the ref array
-2.roll it
-3.add a scalar
-4.roll it
-#NOTE for each key releated generator preocess
-"""
 def initial_vector_generator(parameter1):
 	iv_ref_array = np.loadtxt("iv.csv",dtype=np.int8,delimiter=",")
 	temp_key = [1 for x in range(95)]
