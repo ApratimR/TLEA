@@ -84,23 +84,20 @@ def initial_vector_generator(parameter1):
 	#the rounds of 16 are done here
 	for _ in range(2):
 		for temp1 in parameter1:
-			temp_key = (temp_key+iv_ref_array[temp1])%95
-			temp_key = np.roll(temp_key,temp1+85)
 			temp_key = (temp_key+iv_ref_array[(temp1+7)%95])%95
 			temp_key = np.roll(temp_key,temp1-35)
 			temp_key = (temp_key+temp1+36)%95
+			temp_key = np.roll(temp_key,temp1-80)
 
-			temp_key = np.roll(temp_key,temp1-73)
-			temp_key = (temp_key+iv_ref_array[(temp1+31)%95])%95
-			temp_key = np.roll(temp_key,temp1+26)
-			temp_key = (temp_key+iv_ref_array[(temp1+39)%95])%95
-
-			temp_key = np.roll(temp_key,temp1+42)
-			temp_key = (temp_key+iv_ref_array[(temp1+64)%95])%95
-			temp_key = np.roll(temp_key,temp1+90)
-			temp_key = (temp_key+iv_ref_array[(temp1+39)%95])%95
-			temp_key = np.roll(temp_key,temp1+68)
-
+			temp_key = (temp_key+iv_ref_array[(temp1+66)%95])%95
+			temp_key = np.roll(temp_key,temp1-5)
+			temp_key = (temp_key+temp1+63)%95
+			temp_key = np.roll(temp_key,temp1+83)
+	
+			temp_key = (temp_key+iv_ref_array[(temp1+10)%95])%95
+			temp_key = np.roll(temp_key,temp1+28)
+			temp_key = (temp_key+temp1+79)%95
+			temp_key = np.roll(temp_key,temp1-92)
 	return temp_key
 
 
