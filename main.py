@@ -41,7 +41,7 @@ def convert_back(parameter1):
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter1):
-	key_ref_array = np.loadtxt("ref_array.csv",dtype=np.int8,delimiter=",")
+	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
 	temp_key = [1 for x in range(95)]
 	#the rounds of 16 are done here
 	for _ in range(64):
@@ -63,7 +63,7 @@ def key_expansion(parameter1):
 
 
 def key_expansion1(parameter1):
-	key_ref_array = np.loadtxt("ref_array.csv",dtype=np.int8,delimiter=",")
+	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
 	temp_key = [1 for x in range(95)]
 	#the rounds of 16 are done here
 	for _ in range(64):
@@ -152,6 +152,7 @@ def decrypt(round_dencryption_matrix,key1,key2,data):
 
 
 def do_encryption(rawdata , rawkey):
+	"""rawdara """
 	temp = main_call(rawdata,rawkey,1)
 	return temp
 
@@ -168,21 +169,21 @@ def do_decryption_chain(rawdata ,rawkey):
 	return temp
 
 def main_call(rawdata , rawkey ,option):
-	sahdow_encryption_matrix = np.loadtxt("main_array.csv",dtype=np.int8,delimiter=",")
+	sahdow_encryption_matrix = np.loadtxt("set1.csv",dtype=np.int8,delimiter=",")
 	data = converter(padder(list(rawdata)))
 	key = converter(list(rawkey))
 	key1,key2 = key_expansion(key),key_expansion1(key)
 	
 	if option == 1 :data = encrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
 	elif option == 2 :data = decrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
-	elif option == 3 :data = encrypt_chain(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
-	elif option == 4 :data = decrypt_chain(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
+	elif option == 3 :iv = initial_vector_generator(key);data = encrypt_chain(sahdow_encryption_matrix,key1,key2,iv,data);return(convert_back(data))
+	elif option == 4 :iv = initial_vector_generator(key);data = decrypt_chain(sahdow_encryption_matrix,key1,key2,iv,data);return(convert_back(data))
 
 
 #encryption function 
 #TODO need to introduce chaining below with no parallelization
 #or any initial vector
-def encrypt_chain(round_encryption_matrix,key1,key2,data):
+def encrypt_chain(round_encryption_matrix,key1,key2,initial_vector,data):
 	data_temp = []
 	for temp1 in range(95):
 		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key1[temp1])
@@ -204,7 +205,7 @@ def encrypt_chain(round_encryption_matrix,key1,key2,data):
 
 
 
-def decrypt_chain(round_dencryption_matrix,key1,key2,data):
+def decrypt_chain(round_dencryption_matrix,key1,key2,initial_vector,data):
 	data_temp = []
 	for temp1 in range(95):
 		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
