@@ -1,8 +1,18 @@
 import numpy as np
+import os
 
 #char array (size = 95)
 char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\^_]`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
 
+display_text_header ="""
+████████╗██╗        ███████╗    █████╗    
+╚══██╔══╝██║        ██╔════╝   ██╔══██╗   
+   ██║   ██║        █████╗     ███████║   
+   ██║   ██║        ██╔══╝     ██╔══██║   
+   ██║██╗███████╗██╗███████╗██╗██║  ██║██╗
+   ╚═╝╚═╝╚══════╝╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚═╝
+   (Totally.Logical.Encryption.Algorithm)
+"""
 
 #converts character list to integer values
 def converter(parameter1):
@@ -223,20 +233,39 @@ def decrypt_chain(round_dencryption_matrix,key1,key2,initial_vector,data):
 
 	return data_temp
 
+#display of header
+def main():
+	print(display_text_header)
+	main2()
 
-if __name__ == "__main__":
-	rawtext = str(input("enter the data you want to encrypt/decrypt"))
-	password = str(input("enter the password"))
-	ModeOfOperation = int(input("""
+#the main function
+def main2():
+	rawtext = str(input("\nenter the data you want to encrypt/decrypt :"))
+	password = str(input("enter the password :"))
+	ModeOfOperation = int(input(f"""
 enter the mode of operation
 1.encryption without chaining
 2.decryption without chaining
+
 3.encryption with chaining
 4.decryption with chaining
+
+ENTER ANY OTHER KEY TO EXIT PROGRAM
+
+PS:Output is pasted system clipboard
 =>"""))
 
 	if ModeOfOperation in (1,2,3,4):
 		output = main_call(rawdata=rawtext,rawkey=password,option = ModeOfOperation)
 		print(output)
+
+		#os command to past to clip board
+		# command = 'echo | set /p nul=' + output.strip() + '| clip'
+		# os.system(command)
+		# main2()
 	else:
-		raise Exception("Invalid option entered")
+		exit()
+
+#main calll
+if __name__ == "__main__":
+	main()
