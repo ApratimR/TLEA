@@ -47,6 +47,7 @@ def convert_back(parameter1):
 	return output
 
 def array_rotation(target,reference):
+	"""rotates 2d array(target) in slice With the value in the list(reference)"""
 	if len(target)!=len(reference):
 		raise Exception("length of target not simialr to length of reference")
 
@@ -59,7 +60,7 @@ def array_rotation(target,reference):
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
-	temp_key = [1 for x in range(95)]
+	temp_key = np.ones((95),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
@@ -81,7 +82,7 @@ def key_expansion(parameter1):
 
 def key_expansion1(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
-	temp_key = [1 for x in range(95)]
+	temp_key = np.ones((95),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
@@ -103,7 +104,7 @@ def key_expansion1(parameter1):
 
 def initial_vector_generator(parameter1):
 	iv_ref_array = np.loadtxt("iv.csv",dtype=np.int8,delimiter=",")
-	temp_key = [1 for x in range(95)]
+	temp_key = np.ones((95),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(2):
 		for temp1 in parameter1:
