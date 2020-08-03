@@ -198,6 +198,8 @@ def main_call(rawdata , rawkey ,option):
 
 #encryption function 
 #TODO need to introduce chaining below with no parallelization
+#FIXME to start working
+#per round IV generation for offsetting of the @parameter=round_encryption_matrix
 #or any initial vector
 def encrypt_chain(round_encryption_matrix,key1,key2,initial_vector,data):
 	data_temp = []
