@@ -46,7 +46,14 @@ def convert_back(parameter1):
 		print("error encountered while indexing")
 	return output
 
+def array_rotation(target,reference):
+	if len(target)!=len(reference):
+		raise Exception("length of target not simialr to length of reference")
 
+	for temp1 in range(len(target)):
+		target[temp1]=np.roll(target[temp1],reference[temp1])
+
+	return target
 
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
@@ -120,8 +127,7 @@ def initial_vector_generator(parameter1):
 #encryption function
 def encrypt(round_encryption_matrix,key1,key2,data):
 	data_temp = []
-	for temp1 in range(95):
-		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key1[temp1])
+	round_encryption_matrix=array_rotation(round_encryption_matrix,key1)
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
@@ -144,8 +150,7 @@ def encrypt(round_encryption_matrix,key1,key2,data):
 #decryption function
 def decrypt(round_dencryption_matrix,key1,key2,data):
 	data_temp = []
-	for temp1 in range(95):
-		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
+	round_dencryption_matrix=array_rotation(round_dencryption_matrix,key1)
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
@@ -195,11 +200,16 @@ def main_call(rawdata , rawkey ,option):
 #or any initial vector
 def encrypt_chain(round_encryption_matrix,key1,key2,initial_vector,data):
 	data_temp = []
-	for temp1 in range(95):
-		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key1[temp1])
+
+	round_encryption_matrix=array_rotation(round_encryption_matrix,key1)
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
+
+
+		round_encryption_matrix=array_rotation(round_encryption_matrix,initial_vector)
+
+
 		temp_array = data[(temp*95):(temp*95)+95]
 
 		#the encryption process
@@ -217,8 +227,7 @@ def encrypt_chain(round_encryption_matrix,key1,key2,initial_vector,data):
 
 def decrypt_chain(round_dencryption_matrix,key1,key2,initial_vector,data):
 	data_temp = []
-	for temp1 in range(95):
-		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key1[temp1])
+	round_dencryption_matrix=array_rotation(round_dencryption_matrix,key1)
 
 	#this is the main encryption loop over data
 	for temp in range(int(len(data)/95)):
