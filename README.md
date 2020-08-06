@@ -15,4 +15,5 @@ Reason i am making this thing :
 ## TODOs
 
 - [X] make it work
+- [ ] improve security (need to use chaining to avoid pattern based attack)
 - [ ] make the NIM or C implementation for speed
