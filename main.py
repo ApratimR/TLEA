@@ -1,8 +1,8 @@
 import numpy as np
-import os
+import base64
 
-#char array (size = 95)
-char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\^_]`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
+#char array (size = 64)
+char_array = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
 
 display_text_header ="""
 ████████╗██╗        ███████╗    █████╗    
@@ -18,6 +18,12 @@ display_text_header ="""
 def converter(parameter1):
 	local_ar1 = []
 	try:
+		#TODO need work on converting it to base 64
+		parameter1 = str(parameter1)
+		parameter1 = parameter1.encode()
+		parameter1 = base64.b64encode(parameter1)
+		parameter1 = parameter1.decode()
+		parameter1 = list(parameter1)
 		for temp1 in parameter1:
 			local_ar1.append(char_array.index(temp1))
 	except:
@@ -29,10 +35,10 @@ def converter(parameter1):
 def padder(parameter1):
 	if len(parameter1) == 0:
 		print("no data provided deafult set to spaces")
-		parameter1.extend([" "for x in range(95)])
+		parameter1.extend([" "for x in range(64)])
 	else:
-		if len(parameter1)%95 != 0:
-			parameter1.extend([" " for x in range((95-len(parameter1)%95))])
+		if len(parameter1)%64 != 0:
+			parameter1.extend([" " for x in range((64-len(parameter1)%64))])
 	return parameter1
 
 #converts integer value list to string
@@ -57,70 +63,70 @@ def array_rotation(target,reference):
 	return target
 
 
-#compress/expands the input array to 18 nonagenquinnary size (95-bit)
+#compress/expands the input array to 18 nonagenquinnary size (64-bit)
 def key_expansion(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
-	temp_key = np.ones((95),dtype=np.uint8)
+	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
-			temp_key = (temp_key+key_ref_array[(temp1+-81)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+-81)%64])%64
 			temp_key = np.roll(temp_key,temp1-25)
-			temp_key = (temp_key+temp1-43)%95
+			temp_key = (temp_key+temp1-43)%64
 			temp_key = np.roll(temp_key,temp1-32)
 
-			temp_key = (temp_key+key_ref_array[(temp1+75)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+75)%64])%64
 			temp_key = np.roll(temp_key,temp1+94)
-			temp_key = (temp_key+temp1+45)%95
+			temp_key = (temp_key+temp1+45)%64
 			temp_key = np.roll(temp_key,temp1-47)
 	
-			temp_key = (temp_key+key_ref_array[(temp1+15)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+15)%64])%64
 			temp_key = np.roll(temp_key,temp1-17)
-			temp_key = (temp_key+temp1+15)%95
+			temp_key = (temp_key+temp1+15)%64
 	return temp_key
 
 
 def key_expansion1(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
-	temp_key = np.ones((95),dtype=np.uint8)
+	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
-			temp_key = (temp_key+key_ref_array[(temp1+66)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+66)%64])%64
 			temp_key = np.roll(temp_key,temp1-55)
-			temp_key = (temp_key+temp1-46)%95
+			temp_key = (temp_key+temp1-46)%64
 			temp_key = np.roll(temp_key,temp1-87)
 
-			temp_key = (temp_key+key_ref_array[(temp1+74)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+74)%64])%64
 			temp_key = np.roll(temp_key,temp1-53)
-			temp_key = (temp_key+temp1-16)%95
+			temp_key = (temp_key+temp1-16)%64
 			temp_key = np.roll(temp_key,temp1+71)
 	
-			temp_key = (temp_key+key_ref_array[(temp1+64)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+64)%64])%64
 			temp_key = np.roll(temp_key,temp1+62)
-			temp_key = (temp_key+temp1+51)%95
+			temp_key = (temp_key+temp1+51)%64
 	return temp_key
 
 
 def initial_vector_generator(parameter1):
-	iv_ref_array = np.loadtxt("iv.csv",dtype=np.int8,delimiter=",")
-	temp_key = np.ones((95),dtype=np.uint8)
+	iv_ref_array = np.loadtxt("set3.csv",dtype=np.int8,delimiter=",")
+	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(2):
 		for temp1 in parameter1:
-			temp_key = (temp_key+iv_ref_array[(temp1-76)%95])%95
+			temp_key = (temp_key+iv_ref_array[(temp1-76)%64])%64
 			temp_key = np.roll(temp_key,temp1-91)
-			temp_key = (temp_key+temp1-38)%95
+			temp_key = (temp_key+temp1-38)%64
 			temp_key = np.roll(temp_key,temp1-22)
 
-			temp_key = (temp_key+iv_ref_array[(temp1-5)%95])%95
+			temp_key = (temp_key+iv_ref_array[(temp1-5)%64])%64
 			temp_key = np.roll(temp_key,temp1-17)
-			temp_key = (temp_key+temp1+62)%95
+			temp_key = (temp_key+temp1+62)%64
 			temp_key = np.roll(temp_key,temp1+11)
 	
-			temp_key = (temp_key+iv_ref_array[(temp1-49)%95])%95
+			temp_key = (temp_key+iv_ref_array[(temp1-49)%64])%64
 			temp_key = np.roll(temp_key,temp1+7)
-			temp_key = (temp_key+temp1-19)%95
+			temp_key = (temp_key+temp1-19)%64
 			temp_key = np.roll(temp_key,temp1+20)
 	return temp_key
 
@@ -131,13 +137,13 @@ def encrypt(round_encryption_matrix,key1,key2,data):
 	round_encryption_matrix=array_rotation(round_encryption_matrix,key1)
 
 	#this is the main encryption loop over data
-	for temp in range(int(len(data)/95)):
-		temp_array = data[(temp*95):(temp*95)+95]
+	for temp in range(int(len(data)/64)):
+		temp_array = data[(temp*64):(temp*64)+64]
 
 		#the encryption process
 		#the rounds of 16 are done here
 		for _ in range(16):
-			for temp1 in range(95):
+			for temp1 in range(64):
 				temp_array[temp1] = round_encryption_matrix[key2[temp1]][temp_array[temp1]]
 
 		#join the processed data to a temp to send it back
@@ -154,12 +160,12 @@ def decrypt(round_dencryption_matrix,key1,key2,data):
 	round_dencryption_matrix=array_rotation(round_dencryption_matrix,key1)
 
 	#this is the main encryption loop over data
-	for temp in range(int(len(data)/95)):
-		temp_array = data[(temp*95):(temp*95)+95]
+	for temp in range(int(len(data)/64)):
+		temp_array = data[(temp*64):(temp*64)+64]
 
 		#the rounds of 16 are done here
 		for _ in range(16):
-			for temp1 in range(95):
+			for temp1 in range(64):
 				temp_array[temp1] = round_dencryption_matrix[key2[temp1]].tolist().index(temp_array[temp1])
 
 		data_temp.extend(temp_array)
@@ -207,18 +213,18 @@ def encrypt_chain(round_encryption_matrix,key1,key2,initial_vector,data):
 	round_encryption_matrix=array_rotation(round_encryption_matrix,key1)
 
 	#this is the main encryption loop over data
-	for temp in range(int(len(data)/95)):
+	for temp in range(int(len(data)/64)):
 
 
 		round_encryption_matrix=array_rotation(round_encryption_matrix,initial_vector)
 
 
-		temp_array = data[(temp*95):(temp*95)+95]
+		temp_array = data[(temp*64):(temp*64)+64]
 
 		#the encryption process
 		#the rounds of 16 are done here
 		for _ in range(16):
-			for temp1 in range(95):
+			for temp1 in range(64):
 				temp_array[temp1] = round_encryption_matrix[key2[temp1]][temp_array[temp1]]
 
 		#join the processed data to a temp to send it back
@@ -233,12 +239,12 @@ def decrypt_chain(round_dencryption_matrix,key1,key2,initial_vector,data):
 	round_dencryption_matrix=array_rotation(round_dencryption_matrix,key1)
 
 	#this is the main encryption loop over data
-	for temp in range(int(len(data)/95)):
-		temp_array = data[(temp*95):(temp*95)+95]
+	for temp in range(int(len(data)/64)):
+		temp_array = data[(temp*64):(temp*64)+64]
 
 		#the rounds of 16 are done here
 		for _ in range(16):
-			for temp1 in range(95):
+			for temp1 in range(64):
 				temp_array[temp1] = round_dencryption_matrix[key2[temp1]].tolist().index(temp_array[temp1])
 
 		data_temp.extend(temp_array)
