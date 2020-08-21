@@ -16,19 +16,21 @@ display_text_header ="""
 
 #converts character list to integer values
 def converter(parameter1):
-	local_ar1 = []
-	try:
-		#TODO need work on converting it to base 64
-		parameter1 = str(parameter1)
-		parameter1 = parameter1.encode()
-		parameter1 = base64.b64encode(parameter1)
-		parameter1 = parameter1.decode()
-		parameter1 = list(parameter1)
-		for temp1 in parameter1:
-			local_ar1.append(char_array.index(temp1))
-	except:
-		print("enter valid string default set to 1")
-		local_ar1=1
+	local_ar1 = list()
+
+	if len(parameter1)==0:
+		raise Exception("Paramter provided is empty")
+	elif isinstance(parameter1,str)==False:
+		if isinstance(parameter1,list)==False:
+			raise Exception("improper data type detected")
+	
+	#TODO need work on converting it to base 64
+	parameter1 = parameter1.encode()
+	parameter1 = base64.b64encode(parameter1)
+	parameter1 = parameter1.decode()
+	parameter1 = list(parameter1)
+	for temp1 in parameter1:
+		local_ar1.append(char_array.index(temp1))
 	return local_ar1
 
 #this pads the data
@@ -79,7 +81,7 @@ def key_expansion(parameter1):
 			temp_key = np.roll(temp_key,temp1+94)
 			temp_key = (temp_key+temp1+45)%64
 			temp_key = np.roll(temp_key,temp1-47)
-	
+
 			temp_key = (temp_key+key_ref_array[(temp1+15)%64])%64
 			temp_key = np.roll(temp_key,temp1-17)
 			temp_key = (temp_key+temp1+15)%64
@@ -101,7 +103,7 @@ def key_expansion1(parameter1):
 			temp_key = np.roll(temp_key,temp1-53)
 			temp_key = (temp_key+temp1-16)%64
 			temp_key = np.roll(temp_key,temp1+71)
-	
+
 			temp_key = (temp_key+key_ref_array[(temp1+64)%64])%64
 			temp_key = np.roll(temp_key,temp1+62)
 			temp_key = (temp_key+temp1+51)%64
@@ -123,7 +125,7 @@ def initial_vector_generator(parameter1):
 			temp_key = np.roll(temp_key,temp1-17)
 			temp_key = (temp_key+temp1+62)%64
 			temp_key = np.roll(temp_key,temp1+11)
-	
+
 			temp_key = (temp_key+iv_ref_array[(temp1-49)%64])%64
 			temp_key = np.roll(temp_key,temp1+7)
 			temp_key = (temp_key+temp1-19)%64
@@ -192,8 +194,8 @@ def do_decryption_chain(rawdata ,rawkey):
 
 def main_call(rawdata , rawkey ,option):
 	sahdow_encryption_matrix = np.loadtxt("set1.csv",dtype=np.int8,delimiter=",")
-	data = converter(padder(list(rawdata)))
-	key = converter(list(rawkey))
+	data = converter(rawdata)
+	key = converter(rawkey)
 	key1,key2 = key_expansion(key),key_expansion1(key)
 	
 	if option == 1 :data = encrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
