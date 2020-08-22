@@ -30,14 +30,19 @@ def converter(parameter1):
 	parameter1 = parameter1.decode()
 	parameter1 = list(parameter1)
 	for temp1 in parameter1:
-		local_ar1.append(char_array.index(temp1))
+		if temp1 == "=":
+			break
+		else:
+			local_ar1.append(char_array.index(temp1))
 	return local_ar1
 
 #this pads the data
 def padder(parameter1):
+	#FIXME : need to work on making a empty *string* creation operation
+	parameter1 = str(parameter1)
 	if len(parameter1) == 0:
 		print("no data provided deafult set to spaces")
-		parameter1.extend([" "for x in range(64)])
+		parameter1+=" "
 	else:
 		if len(parameter1)%64 != 0:
 			parameter1.extend([" " for x in range((64-len(parameter1)%64))])
@@ -56,8 +61,6 @@ def convert_back(parameter1):
 
 def array_rotation(target,reference):
 	"""rotates 2d array(target) in slice With the value in the list(reference)"""
-	if len(target)!=len(reference):
-		raise Exception("length of target not simialr to length of reference")
 
 	for temp1 in range(len(target)):
 		target[temp1]=np.roll(target[temp1],reference[temp1])
@@ -271,8 +274,6 @@ enter the mode of operation
 4.decryption with chaining
 
 ENTER ANY OTHER KEY TO EXIT PROGRAM
-
-PS:Output is pasted system clipboard
 =>"""))
 
 	if ModeOfOperation in (1,2,3,4):
