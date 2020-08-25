@@ -73,7 +73,7 @@ def key_expansion(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
 	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
-	for _ in range(64):
+	for rounds in range(64):
 		for temp1 in parameter1:
 			temp_key = (temp_key+key_ref_array[(temp1+-81)%64])%64
 			temp_key = np.roll(temp_key,temp1-25)
@@ -95,7 +95,7 @@ def key_expansion1(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
 	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
-	for _ in range(64):
+	for rounds in range(64):
 		for temp1 in parameter1:
 			temp_key = (temp_key+key_ref_array[(temp1+66)%64])%64
 			temp_key = np.roll(temp_key,temp1-55)
@@ -117,7 +117,7 @@ def initial_vector_generator(parameter1):
 	iv_ref_array = np.loadtxt("set3.csv",dtype=np.int8,delimiter=",")
 	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
-	for _ in range(2):
+	for rounds in range(2):
 		for temp1 in parameter1:
 			temp_key = (temp_key+iv_ref_array[(temp1-76)%64])%64
 			temp_key = np.roll(temp_key,temp1-91)
@@ -147,7 +147,7 @@ def encrypt(round_encryption_matrix,key1,key2,data):
 
 		#the encryption process
 		#the rounds of 16 are done here
-		for _ in range(16):
+		for rounds in range(16):
 			for temp1 in range(64):
 				temp_array[temp1] = round_encryption_matrix[key2[temp1]][temp_array[temp1]]
 
@@ -169,7 +169,7 @@ def decrypt(round_dencryption_matrix,key1,key2,data):
 		temp_array = data[(temp*64):(temp*64)+64]
 
 		#the rounds of 16 are done here
-		for _ in range(16):
+		for rounds in range(16):
 			for temp1 in range(64):
 				temp_array[temp1] = round_dencryption_matrix[key2[temp1]].tolist().index(temp_array[temp1])
 
