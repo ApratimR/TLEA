@@ -1,8 +1,9 @@
 import numpy as np
+import base64
 import os
 
-#char array (size = 95)
-char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\^_]`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
+
+char_array = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
 
 display_text_header ="""
 ████████╗██╗        ███████╗    █████╗    
@@ -25,15 +26,6 @@ def converter(parameter1):
 		local_ar1=1
 	return local_ar1
 
-#this pads the data
-def padder(parameter1):
-	if len(parameter1) == 0:
-		print("no data provided deafult set to spaces")
-		parameter1.extend([" "for x in range(95)])
-	else:
-		if len(parameter1)%95 != 0:
-			parameter1.extend([" " for x in range((95-len(parameter1)%95))])
-	return parameter1
 
 #converts integer value list to string
 def convert_back(parameter1):
@@ -60,23 +52,23 @@ def array_rotation(target,reference):
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter1):
 	key_ref_array = np.loadtxt("set2.csv",dtype=np.int8,delimiter=",")
-	temp_key = np.ones((95),dtype=np.uint8)
+	temp_key = np.ones((64),dtype=np.uint8)
 	#the rounds of 16 are done here
 	for _ in range(64):
 		for temp1 in parameter1:
-			temp_key = (temp_key+key_ref_array[(temp1+-81)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+-81)%64])%64
 			temp_key = np.roll(temp_key,temp1-25)
-			temp_key = (temp_key+temp1-43)%95
+			temp_key = (temp_key+temp1-43)%64
 			temp_key = np.roll(temp_key,temp1-32)
 
-			temp_key = (temp_key+key_ref_array[(temp1+75)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+75)%64])%64
 			temp_key = np.roll(temp_key,temp1+94)
-			temp_key = (temp_key+temp1+45)%95
+			temp_key = (temp_key+temp1+45)%64
 			temp_key = np.roll(temp_key,temp1-47)
 	
-			temp_key = (temp_key+key_ref_array[(temp1+15)%95])%95
+			temp_key = (temp_key+key_ref_array[(temp1+15)%64])%64
 			temp_key = np.roll(temp_key,temp1-17)
-			temp_key = (temp_key+temp1+15)%95
+			temp_key = (temp_key+temp1+15)%64
 	return temp_key
 
 
@@ -186,8 +178,8 @@ def do_decryption_chain(rawdata ,rawkey):
 
 def main_call(rawdata , rawkey ,option):
 	sahdow_encryption_matrix = np.loadtxt("set1.csv",dtype=np.int8,delimiter=",")
-	data = converter(padder(list(rawdata)))
-	key = converter(list(rawkey))
+	data = converter(rawdata)
+	key = converter(rawkey)
 	key1,key2 = key_expansion(key),key_expansion1(key)
 	
 	if option == 1 :data = encrypt(sahdow_encryption_matrix,key1,key2,data);return(convert_back(data))
