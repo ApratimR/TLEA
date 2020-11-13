@@ -258,7 +258,7 @@ def encrypt(encryption_matrix,key,data):
 	data_temp = []
 
 
-	round_encryption_matrix = encryption_matrix
+	round_encryption_matrix = np.array(encryption_matrix)
 		#rotate the matrix WRT the key
 	for temp1 in range(95):
 		round_encryption_matrix[temp1] = np.roll(round_encryption_matrix[temp1],key[temp1])
@@ -268,7 +268,7 @@ def encrypt(encryption_matrix,key,data):
 		temp_array = data[(temp*95):(temp*95)+95]
 
 		#the encryption process
-		for rounds in range(16):
+		for _ in range(16):
 			for temp1 in range(95):
 				temp_array[temp1] = round_encryption_matrix[temp1][temp_array[temp1]]
 
@@ -284,7 +284,7 @@ def encrypt(encryption_matrix,key,data):
 def decrypt(encryption_matrix,key,data):
 	data_temp = []
 
-	round_dencryption_matrix = encryption_matrix
+	round_dencryption_matrix = np.array(encryption_matrix)
 
 	for temp1 in range(95):
 		round_dencryption_matrix[temp1] = np.roll(round_dencryption_matrix[temp1],key[temp1])
@@ -325,15 +325,30 @@ def main():
 
 def tlea(data,key,mode=1):
 	'''
-data = information you want to encrypt or decrypt 
-key  = key you want to use for the operation
-mode(mode of operation):
-	1 = encrypt
-	2 = decrypy
+	data = information you want to encrypt or decrypt 
+	
+	key  = key you want to use for the operation
+
+	mode = 1 for encrypt(default)
+
+	mode = 2 for decrypy
+
+	for encrypting
+	-
+	>>> a = tlea.tlea(data = "qwerty",key="",mode=1)
+	>>> a
+	'HY#dYY>ye)yxvB_}RWpV3O9}@usqYQV x5OTE. zA7|FVSluhd8:sx,^i&g-/m35_WY5[ 6WoduaPI [) :/wE3>02OyBOK'
+	
+	for decryption
+	-
+	>>> a = tlea.tlea(data = "qwerty",key="",mode=2)
+	>>> a
+	qwerty
 	'''
 
 	data = converter(padder(list(data)))
 	key = converter(list(key))
+	key = key_expansion(key)
 	if mode == 1:
 		return convert_back(encrypt(encryption_matrix,key,data))
 	elif mode == 2:
