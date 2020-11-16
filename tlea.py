@@ -1,4 +1,5 @@
 import numpy as np
+import base64
 
 #char array (size = 95)
 char_array = list("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\^_]`abcdefghijklmnopqrstuvwxyz{|}~ "+'"')
@@ -225,6 +226,16 @@ def padder(parameter1):
 			parameter1.extend([" " for x in range((95-len(parameter1)%95))])
 	return parameter1
 
+#TODO start work here
+def padding_remover(parameter1):
+	temp = None
+	while temp != " ":
+		temp
+
+	return temp
+
+
+
 #converts integer value list to string
 def convert_back(parameter1):
 	output = ""
@@ -236,8 +247,24 @@ def convert_back(parameter1):
 		print("error encountered while indexing")
 	return output
 
+#base64 encoded string to string with padding checking
+def decodedata(a):
+	temp = str(a)
+	paddingLenght = 4-(len(temp) % 4)
+	padding = "="*paddingLenght
+	temp += padding
+	temp = temp.encode(encoding="UTF-8")
+	temp = base64.b64decode(temp)
+	temp = temp.decode(encoding="UTF-8")
+	return temp
 
-
+#string to base64 enocded string
+def encodedata(a):
+	temp = str(a)
+	temp = temp.encode(encoding="UTF-8")
+	temp = base64.b64encode(temp)
+	temp = temp.decode(encoding="UTF-8")
+	return temp
 
 #compress/expands the input array to 18 nonagenquinnary size (95-bit)
 def key_expansion(parameter2):
@@ -303,13 +330,8 @@ def decrypt(encryption_matrix,key,data):
 
 def main():
 	#inputs are taken here
-	data = converter(padder(list(input("enter the data you want encrypt/decrypt :"))))
-	key = converter(list(input("enter a key to encrypt/decrypt operation :")))
-
-	#expands the key to fixed size
-	key = key_expansion(key)
-	#key size=95
-
+	data = input("enter the data you want encrypt/decrypt :")
+	key = input("enter a key to encrypt/decrypt operation :")
 
 
 	while(True):
@@ -318,8 +340,12 @@ def main():
 2 for decryption
 """)
 
-		if option == "1" :data = encrypt(encryption_matrix,key,data);print(convert_back(data));break
-		elif option == "2" :data = decrypt(encryption_matrix,key,data);print(convert_back(data));break
+		if option == "1" :
+			temp = tlea(data=data,key=key)
+			print(temp);break
+		elif option == "2" :
+			temp = tlea(data=data,key=key,mode=2)
+			print(temp);break
 		else : print("invalid input")
 
 
@@ -346,13 +372,18 @@ def tlea(data,key,mode=1):
 	qwerty
 	'''
 
-	data = converter(padder(list(data)))
 	key = converter(list(key))
 	key = key_expansion(key)
-	if mode == 1:
-		return convert_back(encrypt(encryption_matrix,key,data))
-	elif mode == 2:
-		return convert_back(decrypt(encryption_matrix,key,data))
+	if mode == 1:  #this encrypts
+		data = converter(padder(list(data)))
+		return encodedata(convert_back(encrypt(encryption_matrix,key,data)))
+
+
+	elif mode == 2:  #this decrypts
+		data =decodedata(data)
+		data = converter(data)
+		data = convert_back(decrypt(encryption_matrix,key,data))
+		return data
 	else:
 		raise Exception("Invalid mode of operation")
 
