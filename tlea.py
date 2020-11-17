@@ -226,13 +226,16 @@ def padder(parameter1):
 			parameter1.extend([" " for x in range((95-len(parameter1)%95))])
 	return parameter1
 
-#TODO start work here
+#TODO need work here
 def padding_remover(parameter1):
-	temp = None
-	while temp != " ":
-		temp
-
-	return temp
+	temp = parameter1[::-1]
+	counter = 0
+	for temp1 in temp:
+		if temp1 != " ":
+			break
+		counter+=1
+	
+	return str(parameter1[0:(-counter)])
 
 
 
@@ -382,7 +385,7 @@ def tlea(data,key,mode=1):
 	elif mode == 2:  #this decrypts
 		data =decodedata(data)
 		data = converter(data)
-		data = convert_back(decrypt(encryption_matrix,key,data))
+		data = padding_remover(convert_back(decrypt(encryption_matrix,key,data)))
 		return data
 	else:
 		raise Exception("Invalid mode of operation")
