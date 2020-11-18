@@ -2,18 +2,20 @@
 
 <img src="TLEA.png" width="400">
 
-As the Acronym says its a Logical (Pun found?? ) , in-progress symmetric key encryption algorithm whoes aim is to 
+As the Acronym says its a Logical (Pun found?? ) , under-development symmetric key encryption algorithm that aim to 
 * be secure
 * be fast
-* should be easy to modify for larger size internal block construction
-* able to avoid various risks from quantum computers
+* easy to modify
+* able to avoid various attacks
 
 
 Reason i am making this thing :
 * i am just intrested in making/understanding this kind of stuff
 * and this is also my university project
 
+### Requirement
 
+* made on ```numpy == 1.19.1```
 
 
 ### How to use
